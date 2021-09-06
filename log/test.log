@@ -1,0 +1,1303 @@
+  [1m[35m (0.5ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "account_transactions"[0m
+  [1m[35m (0.5ms)[0m  [1m[35mCREATE TABLE "account_transactions" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "transaction_number" varchar, "account_id" integer NOT NULL, "amount" decimal, "transaction_type" varchar, "description" varchar, "transfer_id" integer NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE INDEX "index_account_transactions_on_account_id" ON "account_transactions" ("account_id")[0m
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE INDEX "index_account_transactions_on_transfer_id" ON "account_transactions" ("transfer_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "accounts"[0m
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE TABLE "accounts" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "client_id" integer NOT NULL, "account_number" varchar, "balance" decimal, "currency" varchar, "status" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE INDEX "index_accounts_on_client_id" ON "accounts" ("client_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "clients"[0m
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE TABLE "clients" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "first_name" varchar, "last_name" varchar, "phone_number" varchar, "address" varchar, "city" varchar, "country" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE IF EXISTS "transfers"[0m
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE TABLE "transfers" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "transferor_id" integer, "transferee_id" integer, "execution_date" date, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE INDEX "index_transfers_on_transferee_id" ON "transfers" ("transferee_id")[0m
+  [1m[35m (0.4ms)[0m  [1m[35mCREATE INDEX "index_transfers_on_transferor_id" ON "transfers" ("transferor_id")[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TEMPORARY TABLE "aaccount_transactions" ("id" integer NOT NULL PRIMARY KEY, "transaction_number" varchar DEFAULT NULL, "account_id" integer NOT NULL, "amount" decimal DEFAULT NULL, "transaction_type" varchar DEFAULT NULL, "description" varchar DEFAULT NULL, "transfer_id" integer NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "tindex_aaccount_transactions_on_transfer_id" ON "aaccount_transactions" ("transfer_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "tindex_aaccount_transactions_on_account_id" ON "aaccount_transactions" ("account_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[32mINSERT INTO "aaccount_transactions" ("id","transaction_number","account_id","amount","transaction_type","description","transfer_id","created_at","updated_at")
+                     SELECT "id","transaction_number","account_id","amount","transaction_type","description","transfer_id","created_at","updated_at" FROM "account_transactions"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mDROP TABLE "account_transactions"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TABLE "account_transactions" ("id" integer NOT NULL PRIMARY KEY, "transaction_number" varchar DEFAULT NULL, "account_id" integer NOT NULL, "amount" decimal DEFAULT NULL, "transaction_type" varchar DEFAULT NULL, "description" varchar DEFAULT NULL, "transfer_id" integer NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_fc4e13c982"
+FOREIGN KEY ("account_id")
+  REFERENCES "accounts" ("id")
+)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_account_transactions_on_account_id" ON "account_transactions" ("account_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_account_transactions_on_transfer_id" ON "account_transactions" ("transfer_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[32mINSERT INTO "account_transactions" ("id","transaction_number","account_id","amount","transaction_type","description","transfer_id","created_at","updated_at")
+                     SELECT "id","transaction_number","account_id","amount","transaction_type","description","transfer_id","created_at","updated_at" FROM "aaccount_transactions"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE "aaccount_transactions"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TEMPORARY TABLE "aaccount_transactions" ("id" integer NOT NULL PRIMARY KEY, "transaction_number" varchar DEFAULT NULL, "account_id" integer NOT NULL, "amount" decimal DEFAULT NULL, "transaction_type" varchar DEFAULT NULL, "description" varchar DEFAULT NULL, "transfer_id" integer NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "tindex_aaccount_transactions_on_transfer_id" ON "aaccount_transactions" ("transfer_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "tindex_aaccount_transactions_on_account_id" ON "aaccount_transactions" ("account_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[32mINSERT INTO "aaccount_transactions" ("id","transaction_number","account_id","amount","transaction_type","description","transfer_id","created_at","updated_at")
+                     SELECT "id","transaction_number","account_id","amount","transaction_type","description","transfer_id","created_at","updated_at" FROM "account_transactions"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "account_transactions"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "account_transactions" ("id" integer NOT NULL PRIMARY KEY, "transaction_number" varchar DEFAULT NULL, "account_id" integer NOT NULL, "amount" decimal DEFAULT NULL, "transaction_type" varchar DEFAULT NULL, "description" varchar DEFAULT NULL, "transfer_id" integer NOT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_fc4e13c982"
+FOREIGN KEY ("account_id")
+  REFERENCES "accounts" ("id")
+, CONSTRAINT "fk_rails_41a54502a9"
+FOREIGN KEY ("transfer_id")
+  REFERENCES "transfers" ("id")
+)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_account_transactions_on_account_id" ON "account_transactions" ("account_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_account_transactions_on_transfer_id" ON "account_transactions" ("transfer_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[32mINSERT INTO "account_transactions" ("id","transaction_number","account_id","amount","transaction_type","description","transfer_id","created_at","updated_at")
+                     SELECT "id","transaction_number","account_id","amount","transaction_type","description","transfer_id","created_at","updated_at" FROM "aaccount_transactions"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE "aaccount_transactions"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TEMPORARY TABLE "aaccounts" ("id" integer NOT NULL PRIMARY KEY, "client_id" integer NOT NULL, "account_number" varchar DEFAULT NULL, "balance" decimal DEFAULT NULL, "currency" varchar DEFAULT NULL, "status" varchar DEFAULT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "tindex_aaccounts_on_client_id" ON "aaccounts" ("client_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[32mINSERT INTO "aaccounts" ("id","client_id","account_number","balance","currency","status","created_at","updated_at")
+                     SELECT "id","client_id","account_number","balance","currency","status","created_at","updated_at" FROM "accounts"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "accounts"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TABLE "accounts" ("id" integer NOT NULL PRIMARY KEY, "client_id" integer NOT NULL, "account_number" varchar DEFAULT NULL, "balance" decimal DEFAULT NULL, "currency" varchar DEFAULT NULL, "status" varchar DEFAULT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_65d703860a"
+FOREIGN KEY ("client_id")
+  REFERENCES "clients" ("id")
+)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_accounts_on_client_id" ON "accounts" ("client_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[32mINSERT INTO "accounts" ("id","client_id","account_number","balance","currency","status","created_at","updated_at")
+                     SELECT "id","client_id","account_number","balance","currency","status","created_at","updated_at" FROM "aaccounts"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE "aaccounts"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TEMPORARY TABLE "atransfers" ("id" integer NOT NULL PRIMARY KEY, "transferor_id" integer DEFAULT NULL, "transferee_id" integer DEFAULT NULL, "execution_date" date DEFAULT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "tindex_atransfers_on_transferor_id" ON "atransfers" ("transferor_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "tindex_atransfers_on_transferee_id" ON "atransfers" ("transferee_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[32mINSERT INTO "atransfers" ("id","transferor_id","transferee_id","execution_date","created_at","updated_at")
+                     SELECT "id","transferor_id","transferee_id","execution_date","created_at","updated_at" FROM "transfers"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mDROP TABLE "transfers"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TABLE "transfers" ("id" integer NOT NULL PRIMARY KEY, "transferor_id" integer DEFAULT NULL, "transferee_id" integer DEFAULT NULL, "execution_date" date DEFAULT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_ef0dae4f7a"
+FOREIGN KEY ("transferee_id")
+  REFERENCES "accounts" ("id")
+)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_transfers_on_transferee_id" ON "transfers" ("transferee_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_transfers_on_transferor_id" ON "transfers" ("transferor_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[32mINSERT INTO "transfers" ("id","transferor_id","transferee_id","execution_date","created_at","updated_at")
+                     SELECT "id","transferor_id","transferee_id","execution_date","created_at","updated_at" FROM "atransfers"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE "atransfers"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TEMPORARY TABLE "atransfers" ("id" integer NOT NULL PRIMARY KEY, "transferor_id" integer DEFAULT NULL, "transferee_id" integer DEFAULT NULL, "execution_date" date DEFAULT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "tindex_atransfers_on_transferor_id" ON "atransfers" ("transferor_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "tindex_atransfers_on_transferee_id" ON "atransfers" ("transferee_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[32mINSERT INTO "atransfers" ("id","transferor_id","transferee_id","execution_date","created_at","updated_at")
+                     SELECT "id","transferor_id","transferee_id","execution_date","created_at","updated_at" FROM "transfers"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "transfers"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TABLE "transfers" ("id" integer NOT NULL PRIMARY KEY, "transferor_id" integer DEFAULT NULL, "transferee_id" integer DEFAULT NULL, "execution_date" date DEFAULT NULL, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, CONSTRAINT "fk_rails_ef0dae4f7a"
+FOREIGN KEY ("transferee_id")
+  REFERENCES "accounts" ("id")
+, CONSTRAINT "fk_rails_22584f0037"
+FOREIGN KEY ("transferor_id")
+  REFERENCES "accounts" ("id")
+)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_transfers_on_transferee_id" ON "transfers" ("transferee_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_transfers_on_transferor_id" ON "transfers" ("transferor_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[32mINSERT INTO "transfers" ("id","transferor_id","transferee_id","execution_date","created_at","updated_at")
+                     SELECT "id","transferor_id","transferee_id","execution_date","created_at","updated_at" FROM "atransfers"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE "atransfers"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL PRIMARY KEY)[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.3ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES (20210905214316)[0m
+  [1m[35m (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES
+(20210905191045),
+(20210905191051),
+(20210905191738);
+
+[0m
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" varchar NOT NULL PRIMARY KEY, "value" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.0ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Create (0.1ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["key", "environment"], ["value", "test"], ["created_at", "2021-09-05 23:53:51.303320"], ["updated_at", "2021-09-05 23:53:51.303320"]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.0ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::InternalMetadata Load (0.0ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Create (0.1ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["key", "schema_sha1"], ["value", "b2555306ca607caae1c4f678b8cd977d742f9c8b"], ["created_at", "2021-09-05 23:53:51.304627"], ["updated_at", "2021-09-05 23:53:51.304627"]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "transfers"[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "transfers"[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", "schema_sha1"]]
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "transfers"[0m
+Started POST "/transfers" for 127.0.0.1 at 2021-09-06 01:56:40 +0200
+Processing by TransfersController#create as JSON
+  Parameters: {"transfer"=>{"transferor_id"=>1, "transferee_id"=>2, "amount"=>50, "execution_date"=>"2021-09-01"}}
+Completed 404 Not Found in 5ms (ActiveRecord: 0.1ms | Allocations: 5530)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+Started POST "/transfers" for 127.0.0.1 at 2021-09-06 01:56:40 +0200
+Processing by TransfersController#create as JSON
+  Parameters: {"transfer"=>{"transferor_id"=>1, "transferee_id"=>2, "amount"=>50, "execution_date"=>"2021-09-01"}}
+Completed 404 Not Found in 0ms (ActiveRecord: 0.0ms | Allocations: 172)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "transfers"[0m
+Started POST "/transfers" for 127.0.0.1 at 2021-09-06 01:56:40 +0200
+Processing by TransfersController#create as JSON
+  Parameters: {"transfer"=>{"transferor_id"=>1, "transferee_id"=>2, "amount"=>1000000, "execution_date"=>"2021-09-01"}}
+Completed 404 Not Found in 0ms (ActiveRecord: 0.0ms | Allocations: 179)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+Started POST "/transfers" for 127.0.0.1 at 2021-09-06 01:56:40 +0200
+Processing by TransfersController#create as JSON
+  Parameters: {"transfer"=>{"transferor_id"=>1, "transferee_id"=>2, "amount"=>1000000, "execution_date"=>"2021-09-01"}}
+Completed 404 Not Found in 0ms (ActiveRecord: 0.0ms | Allocations: 171)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", "schema_sha1"]]
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "transfers"[0m
+Started POST "/transfers" for 127.0.0.1 at 2021-09-06 01:57:08 +0200
+Processing by TransfersController#create as JSON
+  Parameters: {"transfer"=>{"transferor_id"=>1, "transferee_id"=>2, "amount"=>50, "execution_date"=>"2021-09-01"}}
+Completed 404 Not Found in 5ms (ActiveRecord: 0.1ms | Allocations: 5533)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+Started POST "/transfers" for 127.0.0.1 at 2021-09-06 01:57:08 +0200
+Processing by TransfersController#create as JSON
+  Parameters: {"transfer"=>{"transferor_id"=>1, "transferee_id"=>2, "amount"=>50, "execution_date"=>"2021-09-01"}}
+Completed 404 Not Found in 0ms (ActiveRecord: 0.0ms | Allocations: 172)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "transfers"[0m
+Started POST "/transfers" for 127.0.0.1 at 2021-09-06 01:57:08 +0200
+Processing by TransfersController#create as JSON
+  Parameters: {"transfer"=>{"transferor_id"=>1, "transferee_id"=>2, "amount"=>1000000, "execution_date"=>"2021-09-01"}}
+Completed 404 Not Found in 0ms (ActiveRecord: 0.0ms | Allocations: 179)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+Started POST "/transfers" for 127.0.0.1 at 2021-09-06 01:57:08 +0200
+Processing by TransfersController#create as JSON
+  Parameters: {"transfer"=>{"transferor_id"=>1, "transferee_id"=>2, "amount"=>1000000, "execution_date"=>"2021-09-01"}}
+Completed 404 Not Found in 0ms (ActiveRecord: 0.0ms | Allocations: 171)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", "schema_sha1"]]
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "transfers"[0m
+Started POST "/transfers" for 127.0.0.1 at 2021-09-06 01:59:15 +0200
+Processing by TransfersController#create as JSON
+  Parameters: {"transferor_id"=>1, "transferee_id"=>2, "amount"=>50, "execution_date"=>"2021-09-01", "transfer"=>{"transferor_id"=>1, "transferee_id"=>2, "execution_date"=>"2021-09-01"}}
+  [1m[36mAccount Load (0.1ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+Completed 404 Not Found in 6ms (ActiveRecord: 0.3ms | Allocations: 6276)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+Started POST "/transfers" for 127.0.0.1 at 2021-09-06 01:59:15 +0200
+Processing by TransfersController#create as JSON
+  Parameters: {"transfer"=>{"transferor_id"=>1, "transferee_id"=>2, "amount"=>50, "execution_date"=>"2021-09-01"}}
+Completed 404 Not Found in 0ms (ActiveRecord: 0.0ms | Allocations: 186)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "transfers"[0m
+Started POST "/transfers" for 127.0.0.1 at 2021-09-06 01:59:15 +0200
+Processing by TransfersController#create as JSON
+  Parameters: {"transfer"=>{"transferor_id"=>1, "transferee_id"=>2, "amount"=>1000000, "execution_date"=>"2021-09-01"}}
+Completed 404 Not Found in 0ms (ActiveRecord: 0.0ms | Allocations: 179)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+Started POST "/transfers" for 127.0.0.1 at 2021-09-06 01:59:15 +0200
+Processing by TransfersController#create as JSON
+  Parameters: {"transfer"=>{"transferor_id"=>1, "transferee_id"=>2, "amount"=>1000000, "execution_date"=>"2021-09-01"}}
+Completed 404 Not Found in 0ms (ActiveRecord: 0.0ms | Allocations: 171)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (5.8ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", "schema_sha1"]]
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mClient Create (0.3ms)[0m  [1m[32mINSERT INTO "clients" ("first_name", "last_name", "phone_number", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["first_name", "MENTOR"], ["last_name", "NILA"], ["phone_number", "38649841109"], ["created_at", "2021-09-06 00:01:10.130011"], ["updated_at", "2021-09-06 00:01:10.130011"]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mClient Create (0.1ms)[0m  [1m[32mINSERT INTO "clients" ("first_name", "last_name", "phone_number", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["first_name", "JON"], ["last_name", "NILA"], ["phone_number", "38649841110"], ["created_at", "2021-09-06 00:01:10.131078"], ["updated_at", "2021-09-06 00:01:10.131078"]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mClient Load (0.0ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mAccount Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "accounts" WHERE "accounts"."account_number" = ? LIMIT ?[0m  [["account_number", "b3bb13b2-7ec9-42d2-8163-06a2e9c5829d"], ["LIMIT", 1]]
+  [1m[36mAccount Create (0.1ms)[0m  [1m[32mINSERT INTO "accounts" ("client_id", "account_number", "balance", "currency", "status", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)[0m  [["client_id", 1], ["account_number", "b3bb13b2-7ec9-42d2-8163-06a2e9c5829d"], ["balance", 10000.0], ["currency", "USD"], ["status", "ACTIVE"], ["created_at", "2021-09-06 00:01:10.138113"], ["updated_at", "2021-09-06 00:01:10.138113"]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mClient Load (0.0ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mAccount Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "accounts" WHERE "accounts"."account_number" = ? LIMIT ?[0m  [["account_number", "13f1eeab-3770-457a-9488-b0c880f26d1b"], ["LIMIT", 1]]
+  [1m[36mAccount Create (0.1ms)[0m  [1m[32mINSERT INTO "accounts" ("client_id", "account_number", "balance", "currency", "status", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)[0m  [["client_id", 2], ["account_number", "13f1eeab-3770-457a-9488-b0c880f26d1b"], ["balance", 0.0], ["currency", "USD"], ["status", "ACTIVE"], ["created_at", "2021-09-06 00:01:10.139255"], ["updated_at", "2021-09-06 00:01:10.139255"]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "transfers"[0m
+Started POST "/transfers" for 127.0.0.1 at 2021-09-06 02:01:10 +0200
+Processing by TransfersController#create as JSON
+  Parameters: {"transferor_id"=>1, "transferee_id"=>2, "amount"=>50, "execution_date"=>"2021-09-01", "transfer"=>{"transferor_id"=>1, "transferee_id"=>2, "execution_date"=>"2021-09-01"}}
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mTransfer Create (0.1ms)[0m  [1m[32mINSERT INTO "transfers" ("transferor_id", "transferee_id", "execution_date", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["transferor_id", 1], ["transferee_id", 2], ["execution_date", "2021-09-01"], ["created_at", "2021-09-06 00:01:10.156283"], ["updated_at", "2021-09-06 00:01:10.156283"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "account_transactions" WHERE "account_transactions"."transaction_number" = ? LIMIT ?[0m  [["transaction_number", "fb6e64f8-2bb9-453d-9ca8-1ffcc0c5b3b9"], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Create (0.1ms)[0m  [1m[32mINSERT INTO "account_transactions" ("transaction_number", "account_id", "amount", "transaction_type", "transfer_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)[0m  [["transaction_number", "fb6e64f8-2bb9-453d-9ca8-1ffcc0c5b3b9"], ["account_id", 2], ["amount", 50.0], ["transaction_type", "deposit"], ["transfer_id", 1], ["created_at", "2021-09-06 00:01:10.160506"], ["updated_at", "2021-09-06 00:01:10.160506"]]
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "account_transactions" WHERE "account_transactions"."transaction_number" = ? LIMIT ?[0m  [["transaction_number", "5374ebe2-4096-4017-befc-5f7fab134052"], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Create (0.0ms)[0m  [1m[32mINSERT INTO "account_transactions" ("transaction_number", "account_id", "amount", "transaction_type", "transfer_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)[0m  [["transaction_number", "5374ebe2-4096-4017-befc-5f7fab134052"], ["account_id", 1], ["amount", 50.0], ["transaction_type", "withdraw"], ["transfer_id", 1], ["created_at", "2021-09-06 00:01:10.161117"], ["updated_at", "2021-09-06 00:01:10.161117"]]
+  [1m[36mClient Load (0.0ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mAccount Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "accounts" WHERE "accounts"."account_number" = ? AND "accounts"."id" != ? LIMIT ?[0m  [["account_number", "4f6ccacd-1af7-4c33-a670-bd65486207e5"], ["id", 2], ["LIMIT", 1]]
+  [1m[36mAccount Update (0.0ms)[0m  [1m[33mUPDATE "accounts" SET "account_number" = ?, "balance" = ?, "updated_at" = ? WHERE "accounts"."id" = ?[0m  [["account_number", "4f6ccacd-1af7-4c33-a670-bd65486207e5"], ["balance", 50.0], ["updated_at", "2021-09-06 00:01:10.161761"], ["id", 2]]
+  [1m[36mClient Load (0.0ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mAccount Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "accounts" WHERE "accounts"."account_number" = ? AND "accounts"."id" != ? LIMIT ?[0m  [["account_number", "5cc23822-c201-4503-a67a-74c6b525c6d2"], ["id", 1], ["LIMIT", 1]]
+  [1m[36mAccount Update (0.0ms)[0m  [1m[33mUPDATE "accounts" SET "account_number" = ?, "balance" = ?, "updated_at" = ? WHERE "accounts"."id" = ?[0m  [["account_number", "5cc23822-c201-4503-a67a-74c6b525c6d2"], ["balance", 9950.0], ["updated_at", "2021-09-06 00:01:10.162414"], ["id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Completed 201 Created in 11ms (Views: 0.1ms | ActiveRecord: 0.7ms | Allocations: 15633)
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "transfers"[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+Started POST "/transfers" for 127.0.0.1 at 2021-09-06 02:01:10 +0200
+Processing by TransfersController#create as JSON
+  Parameters: {"transfer"=>{"transferor_id"=>1, "transferee_id"=>2, "amount"=>50, "execution_date"=>"2021-09-01"}}
+Completed 404 Not Found in 0ms (ActiveRecord: 0.0ms | Allocations: 207)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "transfers"[0m
+Started POST "/transfers" for 127.0.0.1 at 2021-09-06 02:01:10 +0200
+Processing by TransfersController#create as JSON
+  Parameters: {"transfer"=>{"transferor_id"=>1, "transferee_id"=>2, "amount"=>1000000, "execution_date"=>"2021-09-01"}}
+Completed 404 Not Found in 0ms (ActiveRecord: 0.0ms | Allocations: 179)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+Started POST "/transfers" for 127.0.0.1 at 2021-09-06 02:01:10 +0200
+Processing by TransfersController#create as JSON
+  Parameters: {"transfer"=>{"transferor_id"=>1, "transferee_id"=>2, "amount"=>1000000, "execution_date"=>"2021-09-01"}}
+Completed 404 Not Found in 0ms (ActiveRecord: 0.0ms | Allocations: 171)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (5.0ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", "schema_sha1"]]
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mClient Create (0.2ms)[0m  [1m[32mINSERT INTO "clients" ("first_name", "last_name", "phone_number", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["first_name", "MENTOR"], ["last_name", "NILA"], ["phone_number", "38649841109"], ["created_at", "2021-09-06 00:01:28.794538"], ["updated_at", "2021-09-06 00:01:28.794538"]]
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mClient Create (0.1ms)[0m  [1m[32mINSERT INTO "clients" ("first_name", "last_name", "phone_number", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["first_name", "JON"], ["last_name", "NILA"], ["phone_number", "38649841110"], ["created_at", "2021-09-06 00:01:28.795755"], ["updated_at", "2021-09-06 00:01:28.795755"]]
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mClient Load (0.0ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mAccount Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "accounts" WHERE "accounts"."account_number" = ? LIMIT ?[0m  [["account_number", "1bbf547c-3970-4860-855c-84197cfd0a99"], ["LIMIT", 1]]
+  [1m[36mAccount Create (0.1ms)[0m  [1m[32mINSERT INTO "accounts" ("client_id", "account_number", "balance", "currency", "status", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)[0m  [["client_id", 1], ["account_number", "1bbf547c-3970-4860-855c-84197cfd0a99"], ["balance", 10000.0], ["currency", "USD"], ["status", "ACTIVE"], ["created_at", "2021-09-06 00:01:28.801600"], ["updated_at", "2021-09-06 00:01:28.801600"]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mClient Load (0.0ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mAccount Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "accounts" WHERE "accounts"."account_number" = ? LIMIT ?[0m  [["account_number", "238ea7a9-f14a-4e76-9bab-ed7316cdd3cf"], ["LIMIT", 1]]
+  [1m[36mAccount Create (0.1ms)[0m  [1m[32mINSERT INTO "accounts" ("client_id", "account_number", "balance", "currency", "status", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)[0m  [["client_id", 2], ["account_number", "238ea7a9-f14a-4e76-9bab-ed7316cdd3cf"], ["balance", 0.0], ["currency", "USD"], ["status", "ACTIVE"], ["created_at", "2021-09-06 00:01:28.802802"], ["updated_at", "2021-09-06 00:01:28.802802"]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "transfers"[0m
+Started POST "/transfers" for 127.0.0.1 at 2021-09-06 02:01:28 +0200
+Processing by TransfersController#create as JSON
+  Parameters: {"transferor_id"=>1, "transferee_id"=>2, "amount"=>50, "execution_date"=>"2021-09-01", "transfer"=>{"transferor_id"=>1, "transferee_id"=>2, "execution_date"=>"2021-09-01"}}
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mTransfer Create (0.1ms)[0m  [1m[32mINSERT INTO "transfers" ("transferor_id", "transferee_id", "execution_date", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["transferor_id", 1], ["transferee_id", 2], ["execution_date", "2021-09-01"], ["created_at", "2021-09-06 00:01:28.817188"], ["updated_at", "2021-09-06 00:01:28.817188"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "account_transactions" WHERE "account_transactions"."transaction_number" = ? LIMIT ?[0m  [["transaction_number", "67a72d66-32b2-40b2-a9bc-e15c8bf53a8d"], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Create (0.1ms)[0m  [1m[32mINSERT INTO "account_transactions" ("transaction_number", "account_id", "amount", "transaction_type", "transfer_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)[0m  [["transaction_number", "67a72d66-32b2-40b2-a9bc-e15c8bf53a8d"], ["account_id", 2], ["amount", 50.0], ["transaction_type", "deposit"], ["transfer_id", 1], ["created_at", "2021-09-06 00:01:28.821330"], ["updated_at", "2021-09-06 00:01:28.821330"]]
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "account_transactions" WHERE "account_transactions"."transaction_number" = ? LIMIT ?[0m  [["transaction_number", "9abe5cbc-f192-476e-a7e3-d8bc976efdfa"], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Create (0.0ms)[0m  [1m[32mINSERT INTO "account_transactions" ("transaction_number", "account_id", "amount", "transaction_type", "transfer_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)[0m  [["transaction_number", "9abe5cbc-f192-476e-a7e3-d8bc976efdfa"], ["account_id", 1], ["amount", 50.0], ["transaction_type", "withdraw"], ["transfer_id", 1], ["created_at", "2021-09-06 00:01:28.821930"], ["updated_at", "2021-09-06 00:01:28.821930"]]
+  [1m[36mClient Load (0.0ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mAccount Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "accounts" WHERE "accounts"."account_number" = ? AND "accounts"."id" != ? LIMIT ?[0m  [["account_number", "c7da460a-47e0-4db7-bbb0-de9016380943"], ["id", 2], ["LIMIT", 1]]
+  [1m[36mAccount Update (0.0ms)[0m  [1m[33mUPDATE "accounts" SET "account_number" = ?, "balance" = ?, "updated_at" = ? WHERE "accounts"."id" = ?[0m  [["account_number", "c7da460a-47e0-4db7-bbb0-de9016380943"], ["balance", 50.0], ["updated_at", "2021-09-06 00:01:28.822581"], ["id", 2]]
+  [1m[36mClient Load (0.0ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mAccount Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "accounts" WHERE "accounts"."account_number" = ? AND "accounts"."id" != ? LIMIT ?[0m  [["account_number", "5835e2f6-9cd1-46ec-91f3-f831e7cad672"], ["id", 1], ["LIMIT", 1]]
+  [1m[36mAccount Update (0.0ms)[0m  [1m[33mUPDATE "accounts" SET "account_number" = ?, "balance" = ?, "updated_at" = ? WHERE "accounts"."id" = ?[0m  [["account_number", "5835e2f6-9cd1-46ec-91f3-f831e7cad672"], ["balance", 9950.0], ["updated_at", "2021-09-06 00:01:28.823227"], ["id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Completed 201 Created in 10ms (Views: 0.1ms | ActiveRecord: 0.6ms | Allocations: 15633)
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "transfers"[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+Started POST "/transfers" for 127.0.0.1 at 2021-09-06 02:01:28 +0200
+Processing by TransfersController#create as JSON
+  Parameters: {"transfer"=>{"transferor_id"=>1, "transferee_id"=>2, "amount"=>50, "execution_date"=>"2021-09-01"}}
+Completed 404 Not Found in 0ms (ActiveRecord: 0.0ms | Allocations: 207)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "transfers"[0m
+Started POST "/transfers" for 127.0.0.1 at 2021-09-06 02:01:28 +0200
+Processing by TransfersController#create as JSON
+  Parameters: {"transfer"=>{"transferor_id"=>1, "transferee_id"=>2, "amount"=>1000000, "execution_date"=>"2021-09-01"}}
+Completed 404 Not Found in 0ms (ActiveRecord: 0.0ms | Allocations: 179)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+Started POST "/transfers" for 127.0.0.1 at 2021-09-06 02:01:28 +0200
+Processing by TransfersController#create as JSON
+  Parameters: {"transfer"=>{"transferor_id"=>1, "transferee_id"=>2, "amount"=>1000000, "execution_date"=>"2021-09-01"}}
+Completed 404 Not Found in 0ms (ActiveRecord: 0.0ms | Allocations: 171)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (3.5ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", "schema_sha1"]]
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mClient Create (0.4ms)[0m  [1m[32mINSERT INTO "clients" ("first_name", "last_name", "phone_number", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["first_name", "MENTOR"], ["last_name", "NILA"], ["phone_number", "38649841109"], ["created_at", "2021-09-06 00:02:28.337077"], ["updated_at", "2021-09-06 00:02:28.337077"]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mClient Create (0.1ms)[0m  [1m[32mINSERT INTO "clients" ("first_name", "last_name", "phone_number", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["first_name", "JON"], ["last_name", "NILA"], ["phone_number", "38649841110"], ["created_at", "2021-09-06 00:02:28.338213"], ["updated_at", "2021-09-06 00:02:28.338213"]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mClient Load (0.0ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mAccount Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "accounts" WHERE "accounts"."account_number" = ? LIMIT ?[0m  [["account_number", "3ac1b3d8-61ea-4da5-9c78-adc3f1854aba"], ["LIMIT", 1]]
+  [1m[36mAccount Create (0.1ms)[0m  [1m[32mINSERT INTO "accounts" ("client_id", "account_number", "balance", "currency", "status", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)[0m  [["client_id", 1], ["account_number", "3ac1b3d8-61ea-4da5-9c78-adc3f1854aba"], ["balance", 10000.0], ["currency", "USD"], ["status", "ACTIVE"], ["created_at", "2021-09-06 00:02:28.345395"], ["updated_at", "2021-09-06 00:02:28.345395"]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mClient Load (0.0ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mAccount Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "accounts" WHERE "accounts"."account_number" = ? LIMIT ?[0m  [["account_number", "5e11d880-6518-4f54-9c7d-29bfb3a0b046"], ["LIMIT", 1]]
+  [1m[36mAccount Create (0.1ms)[0m  [1m[32mINSERT INTO "accounts" ("client_id", "account_number", "balance", "currency", "status", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)[0m  [["client_id", 2], ["account_number", "5e11d880-6518-4f54-9c7d-29bfb3a0b046"], ["balance", 0.0], ["currency", "USD"], ["status", "ACTIVE"], ["created_at", "2021-09-06 00:02:28.346365"], ["updated_at", "2021-09-06 00:02:28.346365"]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "transfers"[0m
+Started POST "/transfers" for 127.0.0.1 at 2021-09-06 02:02:28 +0200
+Processing by TransfersController#create as JSON
+  Parameters: {"transferor_id"=>1, "transferee_id"=>2, "amount"=>50, "execution_date"=>"2021-09-01", "transfer"=>{"transferor_id"=>1, "transferee_id"=>2, "execution_date"=>"2021-09-01"}}
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mTransfer Create (0.1ms)[0m  [1m[32mINSERT INTO "transfers" ("transferor_id", "transferee_id", "execution_date", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["transferor_id", 1], ["transferee_id", 2], ["execution_date", "2021-09-01"], ["created_at", "2021-09-06 00:02:28.364799"], ["updated_at", "2021-09-06 00:02:28.364799"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "account_transactions" WHERE "account_transactions"."transaction_number" = ? LIMIT ?[0m  [["transaction_number", "365757ee-c023-4157-8825-6628f03e2001"], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Create (0.1ms)[0m  [1m[32mINSERT INTO "account_transactions" ("transaction_number", "account_id", "amount", "transaction_type", "transfer_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)[0m  [["transaction_number", "365757ee-c023-4157-8825-6628f03e2001"], ["account_id", 2], ["amount", 50.0], ["transaction_type", "deposit"], ["transfer_id", 1], ["created_at", "2021-09-06 00:02:28.369152"], ["updated_at", "2021-09-06 00:02:28.369152"]]
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "account_transactions" WHERE "account_transactions"."transaction_number" = ? LIMIT ?[0m  [["transaction_number", "f26a0c06-e495-45e1-9edd-936cad2b5099"], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Create (0.0ms)[0m  [1m[32mINSERT INTO "account_transactions" ("transaction_number", "account_id", "amount", "transaction_type", "transfer_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)[0m  [["transaction_number", "f26a0c06-e495-45e1-9edd-936cad2b5099"], ["account_id", 1], ["amount", 50.0], ["transaction_type", "withdraw"], ["transfer_id", 1], ["created_at", "2021-09-06 00:02:28.369762"], ["updated_at", "2021-09-06 00:02:28.369762"]]
+  [1m[36mClient Load (0.0ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mAccount Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "accounts" WHERE "accounts"."account_number" = ? AND "accounts"."id" != ? LIMIT ?[0m  [["account_number", "2aa28969-f9de-41c2-ad95-cd524a92822f"], ["id", 2], ["LIMIT", 1]]
+  [1m[36mAccount Update (0.0ms)[0m  [1m[33mUPDATE "accounts" SET "account_number" = ?, "balance" = ?, "updated_at" = ? WHERE "accounts"."id" = ?[0m  [["account_number", "2aa28969-f9de-41c2-ad95-cd524a92822f"], ["balance", 50.0], ["updated_at", "2021-09-06 00:02:28.370414"], ["id", 2]]
+  [1m[36mClient Load (0.0ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mAccount Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "accounts" WHERE "accounts"."account_number" = ? AND "accounts"."id" != ? LIMIT ?[0m  [["account_number", "d7d23d5e-e040-4982-ac93-3c1785a12f89"], ["id", 1], ["LIMIT", 1]]
+  [1m[36mAccount Update (0.0ms)[0m  [1m[33mUPDATE "accounts" SET "account_number" = ?, "balance" = ?, "updated_at" = ? WHERE "accounts"."id" = ?[0m  [["account_number", "d7d23d5e-e040-4982-ac93-3c1785a12f89"], ["balance", 9950.0], ["updated_at", "2021-09-06 00:02:28.371065"], ["id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Completed 201 Created in 11ms (Views: 0.1ms | ActiveRecord: 0.6ms | Allocations: 15633)
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "transfers"[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+Started POST "/transfers" for 127.0.0.1 at 2021-09-06 02:02:28 +0200
+Processing by TransfersController#create as JSON
+  Parameters: {"transfer"=>{"transferor_id"=>1, "transferee_id"=>2, "amount"=>50, "execution_date"=>"2021-09-01"}}
+Completed 404 Not Found in 0ms (ActiveRecord: 0.0ms | Allocations: 207)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "transfers"[0m
+Started POST "/transfers" for 127.0.0.1 at 2021-09-06 02:02:28 +0200
+Processing by TransfersController#create as JSON
+  Parameters: {"transfer"=>{"transferor_id"=>1, "transferee_id"=>2, "amount"=>1000000, "execution_date"=>"2021-09-01"}}
+Completed 404 Not Found in 0ms (ActiveRecord: 0.0ms | Allocations: 179)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+Started POST "/transfers" for 127.0.0.1 at 2021-09-06 02:02:28 +0200
+Processing by TransfersController#create as JSON
+  Parameters: {"transfer"=>{"transferor_id"=>1, "transferee_id"=>2, "amount"=>1000000, "execution_date"=>"2021-09-01"}}
+Completed 404 Not Found in 0ms (ActiveRecord: 0.0ms | Allocations: 171)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", "schema_sha1"]]
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mClient Create (0.5ms)[0m  [1m[32mINSERT INTO "clients" ("first_name", "last_name", "phone_number", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["first_name", "MENTOR"], ["last_name", "NILA"], ["phone_number", "38649841109"], ["created_at", "2021-09-06 00:11:08.192702"], ["updated_at", "2021-09-06 00:11:08.192702"]]
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mClient Create (0.1ms)[0m  [1m[32mINSERT INTO "clients" ("first_name", "last_name", "phone_number", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["first_name", "JON"], ["last_name", "NILA"], ["phone_number", "38649841110"], ["created_at", "2021-09-06 00:11:08.200222"], ["updated_at", "2021-09-06 00:11:08.200222"]]
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mClient Load (0.0ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mAccount Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "accounts" WHERE "accounts"."account_number" = ? LIMIT ?[0m  [["account_number", "d69a3f71-a8f8-45f2-a91d-2efaa196b581"], ["LIMIT", 1]]
+  [1m[36mAccount Create (0.1ms)[0m  [1m[32mINSERT INTO "accounts" ("client_id", "account_number", "balance", "currency", "status", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)[0m  [["client_id", 1], ["account_number", "d69a3f71-a8f8-45f2-a91d-2efaa196b581"], ["balance", 10000.0], ["currency", "USD"], ["status", "ACTIVE"], ["created_at", "2021-09-06 00:11:08.216516"], ["updated_at", "2021-09-06 00:11:08.216516"]]
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mClient Load (0.0ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mAccount Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "accounts" WHERE "accounts"."account_number" = ? LIMIT ?[0m  [["account_number", "954f2de7-82c1-45b8-b2f1-04320260a234"], ["LIMIT", 1]]
+  [1m[36mAccount Create (0.1ms)[0m  [1m[32mINSERT INTO "accounts" ("client_id", "account_number", "balance", "currency", "status", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)[0m  [["client_id", 2], ["account_number", "954f2de7-82c1-45b8-b2f1-04320260a234"], ["balance", 0.0], ["currency", "USD"], ["status", "ACTIVE"], ["created_at", "2021-09-06 00:11:08.217815"], ["updated_at", "2021-09-06 00:11:08.217815"]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "transfers"[0m
+Started POST "/transfers" for 127.0.0.1 at 2021-09-06 02:11:08 +0200
+Processing by TransfersController#create as JSON
+  Parameters: {"transferor_id"=>1, "transferee_id"=>2, "amount"=>50, "execution_date"=>"2021-09-01", "transfer"=>{"transferor_id"=>1, "transferee_id"=>2, "execution_date"=>"2021-09-01"}}
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mTransfer Create (0.1ms)[0m  [1m[32mINSERT INTO "transfers" ("transferor_id", "transferee_id", "execution_date", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["transferor_id", 1], ["transferee_id", 2], ["execution_date", "2021-09-01"], ["created_at", "2021-09-06 00:11:08.237552"], ["updated_at", "2021-09-06 00:11:08.237552"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "account_transactions" WHERE "account_transactions"."transaction_number" = ? LIMIT ?[0m  [["transaction_number", "61cd5984-b043-4922-a2fd-e26647bab4ff"], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Create (0.1ms)[0m  [1m[32mINSERT INTO "account_transactions" ("transaction_number", "account_id", "amount", "transaction_type", "transfer_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)[0m  [["transaction_number", "61cd5984-b043-4922-a2fd-e26647bab4ff"], ["account_id", 2], ["amount", 50.0], ["transaction_type", "deposit"], ["transfer_id", 1], ["created_at", "2021-09-06 00:11:08.241918"], ["updated_at", "2021-09-06 00:11:08.241918"]]
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "account_transactions" WHERE "account_transactions"."transaction_number" = ? LIMIT ?[0m  [["transaction_number", "e70da56a-2d9f-402a-8d53-becd6d9e1d96"], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Create (0.0ms)[0m  [1m[32mINSERT INTO "account_transactions" ("transaction_number", "account_id", "amount", "transaction_type", "transfer_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)[0m  [["transaction_number", "e70da56a-2d9f-402a-8d53-becd6d9e1d96"], ["account_id", 1], ["amount", 50.0], ["transaction_type", "withdraw"], ["transfer_id", 1], ["created_at", "2021-09-06 00:11:08.242524"], ["updated_at", "2021-09-06 00:11:08.242524"]]
+  [1m[36mClient Load (0.0ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mAccount Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "accounts" WHERE "accounts"."account_number" = ? AND "accounts"."id" != ? LIMIT ?[0m  [["account_number", "abbfb0fc-2e4c-41b1-94a7-5052ad0306e2"], ["id", 2], ["LIMIT", 1]]
+  [1m[36mAccount Update (0.0ms)[0m  [1m[33mUPDATE "accounts" SET "account_number" = ?, "balance" = ?, "updated_at" = ? WHERE "accounts"."id" = ?[0m  [["account_number", "abbfb0fc-2e4c-41b1-94a7-5052ad0306e2"], ["balance", 50.0], ["updated_at", "2021-09-06 00:11:08.243177"], ["id", 2]]
+  [1m[36mClient Load (0.0ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mAccount Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "accounts" WHERE "accounts"."account_number" = ? AND "accounts"."id" != ? LIMIT ?[0m  [["account_number", "3936bd12-6438-4cd2-8b03-dd8086d97ded"], ["id", 1], ["LIMIT", 1]]
+  [1m[36mAccount Update (0.0ms)[0m  [1m[33mUPDATE "accounts" SET "account_number" = ?, "balance" = ?, "updated_at" = ? WHERE "accounts"."id" = ?[0m  [["account_number", "3936bd12-6438-4cd2-8b03-dd8086d97ded"], ["balance", 9950.0], ["updated_at", "2021-09-06 00:11:08.243836"], ["id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Completed 201 Created in 11ms (Views: 0.1ms | ActiveRecord: 0.6ms | Allocations: 15635)
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "transfers"[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+Started POST "/transfers" for 127.0.0.1 at 2021-09-06 02:11:08 +0200
+Processing by TransfersController#create as JSON
+  Parameters: {"transfer"=>{"transferor_id"=>1, "transferee_id"=>2, "amount"=>50, "execution_date"=>"2021-09-01"}}
+Completed 404 Not Found in 0ms (ActiveRecord: 0.0ms | Allocations: 207)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "transfers"[0m
+Started POST "/transfers" for 127.0.0.1 at 2021-09-06 02:11:08 +0200
+Processing by TransfersController#create as JSON
+  Parameters: {"transfer"=>{"transferor_id"=>1, "transferee_id"=>2, "amount"=>1000000, "execution_date"=>"2021-09-01"}}
+Completed 404 Not Found in 0ms (ActiveRecord: 0.0ms | Allocations: 179)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+Started POST "/transfers" for 127.0.0.1 at 2021-09-06 02:11:08 +0200
+Processing by TransfersController#create as JSON
+  Parameters: {"transfer"=>{"transferor_id"=>1, "transferee_id"=>2, "amount"=>1000000, "execution_date"=>"2021-09-01"}}
+Completed 404 Not Found in 0ms (ActiveRecord: 0.0ms | Allocations: 171)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", "schema_sha1"]]
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mClient Create (0.3ms)[0m  [1m[32mINSERT INTO "clients" ("first_name", "last_name", "phone_number", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["first_name", "MENTOR"], ["last_name", "NILA"], ["phone_number", "38649841109"], ["created_at", "2021-09-06 00:12:00.346970"], ["updated_at", "2021-09-06 00:12:00.346970"]]
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mClient Create (0.2ms)[0m  [1m[32mINSERT INTO "clients" ("first_name", "last_name", "phone_number", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["first_name", "JON"], ["last_name", "NILA"], ["phone_number", "38649841110"], ["created_at", "2021-09-06 00:12:00.351411"], ["updated_at", "2021-09-06 00:12:00.351411"]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mClient Load (0.0ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mAccount Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "accounts" WHERE "accounts"."account_number" = ? LIMIT ?[0m  [["account_number", "c2cf454b-e592-4252-acba-18705a4f5e6f"], ["LIMIT", 1]]
+  [1m[36mAccount Create (0.2ms)[0m  [1m[32mINSERT INTO "accounts" ("client_id", "account_number", "balance", "currency", "status", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)[0m  [["client_id", 1], ["account_number", "c2cf454b-e592-4252-acba-18705a4f5e6f"], ["balance", 10000.0], ["currency", "USD"], ["status", "ACTIVE"], ["created_at", "2021-09-06 00:12:00.365484"], ["updated_at", "2021-09-06 00:12:00.365484"]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mClient Load (0.0ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mAccount Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "accounts" WHERE "accounts"."account_number" = ? LIMIT ?[0m  [["account_number", "54876587-0a9b-4257-b1b1-8d7015c13fde"], ["LIMIT", 1]]
+  [1m[36mAccount Create (0.1ms)[0m  [1m[32mINSERT INTO "accounts" ("client_id", "account_number", "balance", "currency", "status", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)[0m  [["client_id", 2], ["account_number", "54876587-0a9b-4257-b1b1-8d7015c13fde"], ["balance", 0.0], ["currency", "USD"], ["status", "ACTIVE"], ["created_at", "2021-09-06 00:12:00.366679"], ["updated_at", "2021-09-06 00:12:00.366679"]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+Started POST "/transfers" for 127.0.0.1 at 2021-09-06 02:12:00 +0200
+Processing by TransfersController#create as JSON
+  Parameters: {"transfer"=>{"transferor_id"=>1, "transferee_id"=>2, "amount"=>50, "execution_date"=>"2021-09-01"}}
+Completed 404 Not Found in 2ms (ActiveRecord: 0.0ms | Allocations: 3031)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "transfers"[0m
+Started POST "/transfers" for 127.0.0.1 at 2021-09-06 02:12:00 +0200
+Processing by TransfersController#create as JSON
+  Parameters: {"transfer"=>{"transferor_id"=>1, "transferee_id"=>2, "amount"=>1000000, "execution_date"=>"2021-09-01"}}
+Completed 404 Not Found in 0ms (ActiveRecord: 0.0ms | Allocations: 180)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+Started POST "/transfers" for 127.0.0.1 at 2021-09-06 02:12:00 +0200
+Processing by TransfersController#create as JSON
+  Parameters: {"transfer"=>{"transferor_id"=>1, "transferee_id"=>2, "amount"=>1000000, "execution_date"=>"2021-09-01"}}
+Completed 404 Not Found in 0ms (ActiveRecord: 0.0ms | Allocations: 171)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", "schema_sha1"]]
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mClient Create (0.2ms)[0m  [1m[32mINSERT INTO "clients" ("first_name", "last_name", "phone_number", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["first_name", "MENTOR"], ["last_name", "NILA"], ["phone_number", "38649841109"], ["created_at", "2021-09-06 00:12:46.445656"], ["updated_at", "2021-09-06 00:12:46.445656"]]
+  [1m[36mTRANSACTION (0.8ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mClient Create (0.1ms)[0m  [1m[32mINSERT INTO "clients" ("first_name", "last_name", "phone_number", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["first_name", "JON"], ["last_name", "NILA"], ["phone_number", "38649841110"], ["created_at", "2021-09-06 00:12:46.447177"], ["updated_at", "2021-09-06 00:12:46.447177"]]
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mClient Load (0.1ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mAccount Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "accounts" WHERE "accounts"."account_number" = ? LIMIT ?[0m  [["account_number", "a4503029-4b12-4979-a755-9a07a94bf3b3"], ["LIMIT", 1]]
+  [1m[36mAccount Create (0.1ms)[0m  [1m[32mINSERT INTO "accounts" ("client_id", "account_number", "balance", "currency", "status", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)[0m  [["client_id", 1], ["account_number", "a4503029-4b12-4979-a755-9a07a94bf3b3"], ["balance", 10000.0], ["currency", "USD"], ["status", "ACTIVE"], ["created_at", "2021-09-06 00:12:46.474564"], ["updated_at", "2021-09-06 00:12:46.474564"]]
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mClient Load (0.0ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mAccount Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "accounts" WHERE "accounts"."account_number" = ? LIMIT ?[0m  [["account_number", "d62256af-b350-40ba-829a-68be386f2d2d"], ["LIMIT", 1]]
+  [1m[36mAccount Create (0.1ms)[0m  [1m[32mINSERT INTO "accounts" ("client_id", "account_number", "balance", "currency", "status", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)[0m  [["client_id", 2], ["account_number", "d62256af-b350-40ba-829a-68be386f2d2d"], ["balance", 0.0], ["currency", "USD"], ["status", "ACTIVE"], ["created_at", "2021-09-06 00:12:46.475974"], ["updated_at", "2021-09-06 00:12:46.475974"]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "account_transactions"[0m
+Started POST "/transfers" for 127.0.0.1 at 2021-09-06 02:12:46 +0200
+Processing by TransfersController#create as JSON
+  Parameters: {"transferor_id"=>1, "transferee_id"=>2, "amount"=>50, "execution_date"=>"2021-09-01", "transfer"=>{"transferor_id"=>1, "transferee_id"=>2, "execution_date"=>"2021-09-01"}}
+  [1m[36mAccount Load (0.1ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mTransfer Create (0.2ms)[0m  [1m[32mINSERT INTO "transfers" ("transferor_id", "transferee_id", "execution_date", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["transferor_id", 1], ["transferee_id", 2], ["execution_date", "2021-09-01"], ["created_at", "2021-09-06 00:12:46.493801"], ["updated_at", "2021-09-06 00:12:46.493801"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "account_transactions" WHERE "account_transactions"."transaction_number" = ? LIMIT ?[0m  [["transaction_number", "94e17556-2bab-42b8-9510-d00decc28611"], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Create (0.1ms)[0m  [1m[32mINSERT INTO "account_transactions" ("transaction_number", "account_id", "amount", "transaction_type", "transfer_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)[0m  [["transaction_number", "94e17556-2bab-42b8-9510-d00decc28611"], ["account_id", 2], ["amount", 50.0], ["transaction_type", "deposit"], ["transfer_id", 1], ["created_at", "2021-09-06 00:12:46.498173"], ["updated_at", "2021-09-06 00:12:46.498173"]]
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "account_transactions" WHERE "account_transactions"."transaction_number" = ? LIMIT ?[0m  [["transaction_number", "5dafaabb-bca6-43d4-9e5b-c69ba0ae3a94"], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Create (0.0ms)[0m  [1m[32mINSERT INTO "account_transactions" ("transaction_number", "account_id", "amount", "transaction_type", "transfer_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)[0m  [["transaction_number", "5dafaabb-bca6-43d4-9e5b-c69ba0ae3a94"], ["account_id", 1], ["amount", 50.0], ["transaction_type", "withdraw"], ["transfer_id", 1], ["created_at", "2021-09-06 00:12:46.498952"], ["updated_at", "2021-09-06 00:12:46.498952"]]
+  [1m[36mClient Load (0.0ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mAccount Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "accounts" WHERE "accounts"."account_number" = ? AND "accounts"."id" != ? LIMIT ?[0m  [["account_number", "a925d72c-52ad-4b0d-afd3-7dd3ac0a92a5"], ["id", 2], ["LIMIT", 1]]
+  [1m[36mAccount Update (0.1ms)[0m  [1m[33mUPDATE "accounts" SET "account_number" = ?, "balance" = ?, "updated_at" = ? WHERE "accounts"."id" = ?[0m  [["account_number", "a925d72c-52ad-4b0d-afd3-7dd3ac0a92a5"], ["balance", 50.0], ["updated_at", "2021-09-06 00:12:46.499715"], ["id", 2]]
+  [1m[36mClient Load (0.0ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mAccount Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "accounts" WHERE "accounts"."account_number" = ? AND "accounts"."id" != ? LIMIT ?[0m  [["account_number", "0fcf54b1-20ae-4bf3-b3ab-80e199d75f40"], ["id", 1], ["LIMIT", 1]]
+  [1m[36mAccount Update (0.0ms)[0m  [1m[33mUPDATE "accounts" SET "account_number" = ?, "balance" = ?, "updated_at" = ? WHERE "accounts"."id" = ?[0m  [["account_number", "0fcf54b1-20ae-4bf3-b3ab-80e199d75f40"], ["balance", 9950.0], ["updated_at", "2021-09-06 00:12:46.500852"], ["id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Completed 201 Created in 12ms (Views: 0.1ms | ActiveRecord: 0.9ms | Allocations: 14281)
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "account_transactions"[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+Started POST "/transfers" for 127.0.0.1 at 2021-09-06 02:12:46 +0200
+Processing by TransfersController#create as JSON
+  Parameters: {"transfer"=>{"transferor_id"=>1, "transferee_id"=>2, "amount"=>50, "execution_date"=>"2021-09-01"}}
+Completed 404 Not Found in 0ms (ActiveRecord: 0.0ms | Allocations: 207)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "transfers"[0m
+Started POST "/transfers" for 127.0.0.1 at 2021-09-06 02:12:46 +0200
+Processing by TransfersController#create as JSON
+  Parameters: {"transfer"=>{"transferor_id"=>1, "transferee_id"=>2, "amount"=>1000000, "execution_date"=>"2021-09-01"}}
+Completed 404 Not Found in 0ms (ActiveRecord: 0.0ms | Allocations: 179)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+Started POST "/transfers" for 127.0.0.1 at 2021-09-06 02:12:46 +0200
+Processing by TransfersController#create as JSON
+  Parameters: {"transfer"=>{"transferor_id"=>1, "transferee_id"=>2, "amount"=>1000000, "execution_date"=>"2021-09-01"}}
+Completed 404 Not Found in 0ms (ActiveRecord: 0.0ms | Allocations: 171)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (5.6ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", "schema_sha1"]]
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mClient Create (0.4ms)[0m  [1m[32mINSERT INTO "clients" ("first_name", "last_name", "phone_number", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["first_name", "MENTOR"], ["last_name", "NILA"], ["phone_number", "38649841109"], ["created_at", "2021-09-06 00:26:51.385987"], ["updated_at", "2021-09-06 00:26:51.385987"]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mClient Create (0.1ms)[0m  [1m[32mINSERT INTO "clients" ("first_name", "last_name", "phone_number", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["first_name", "JON"], ["last_name", "NILA"], ["phone_number", "38649841110"], ["created_at", "2021-09-06 00:26:51.387251"], ["updated_at", "2021-09-06 00:26:51.387251"]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mClient Load (0.1ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mAccount Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "accounts" WHERE "accounts"."account_number" = ? LIMIT ?[0m  [["account_number", "83e76a6c-4aaf-4e15-b962-54947d69cdea"], ["LIMIT", 1]]
+  [1m[36mAccount Create (0.1ms)[0m  [1m[32mINSERT INTO "accounts" ("client_id", "account_number", "balance", "currency", "status", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)[0m  [["client_id", 1], ["account_number", "83e76a6c-4aaf-4e15-b962-54947d69cdea"], ["balance", 10000.0], ["currency", "USD"], ["status", "ACTIVE"], ["created_at", "2021-09-06 00:26:51.395748"], ["updated_at", "2021-09-06 00:26:51.395748"]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mClient Load (0.0ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mAccount Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "accounts" WHERE "accounts"."account_number" = ? LIMIT ?[0m  [["account_number", "0e22d95b-5ea6-4d2d-96c2-51de37341f48"], ["LIMIT", 1]]
+  [1m[36mAccount Create (0.1ms)[0m  [1m[32mINSERT INTO "accounts" ("client_id", "account_number", "balance", "currency", "status", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)[0m  [["client_id", 2], ["account_number", "0e22d95b-5ea6-4d2d-96c2-51de37341f48"], ["balance", 0.0], ["currency", "USD"], ["status", "ACTIVE"], ["created_at", "2021-09-06 00:26:51.396918"], ["updated_at", "2021-09-06 00:26:51.396918"]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "account_transactions"[0m
+Started POST "/transfers" for 127.0.0.1 at 2021-09-06 02:26:51 +0200
+Processing by TransfersController#create as JSON
+  Parameters: {"transferor_id"=>1, "transferee_id"=>2, "amount"=>50, "execution_date"=>"2021-09-01", "transfer"=>{"transferor_id"=>1, "transferee_id"=>2, "execution_date"=>"2021-09-01"}}
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mTransfer Create (1.3ms)[0m  [1m[32mINSERT INTO "transfers" ("transferor_id", "transferee_id", "execution_date", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["transferor_id", 1], ["transferee_id", 2], ["execution_date", "2021-09-01"], ["created_at", "2021-09-06 00:26:51.417699"], ["updated_at", "2021-09-06 00:26:51.417699"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "account_transactions" WHERE "account_transactions"."transaction_number" = ? LIMIT ?[0m  [["transaction_number", "71bf3633-9ed5-47cc-a549-5d87c7b022b6"], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Create (0.1ms)[0m  [1m[32mINSERT INTO "account_transactions" ("transaction_number", "account_id", "amount", "transaction_type", "transfer_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)[0m  [["transaction_number", "71bf3633-9ed5-47cc-a549-5d87c7b022b6"], ["account_id", 2], ["amount", 50.0], ["transaction_type", "deposit"], ["transfer_id", 1], ["created_at", "2021-09-06 00:26:51.425408"], ["updated_at", "2021-09-06 00:26:51.425408"]]
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "account_transactions" WHERE "account_transactions"."transaction_number" = ? LIMIT ?[0m  [["transaction_number", "8a05cf78-31eb-4803-bd78-9c09f09b5e1c"], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Create (0.0ms)[0m  [1m[32mINSERT INTO "account_transactions" ("transaction_number", "account_id", "amount", "transaction_type", "transfer_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)[0m  [["transaction_number", "8a05cf78-31eb-4803-bd78-9c09f09b5e1c"], ["account_id", 1], ["amount", 50.0], ["transaction_type", "withdraw"], ["transfer_id", 1], ["created_at", "2021-09-06 00:26:51.426062"], ["updated_at", "2021-09-06 00:26:51.426062"]]
+  [1m[36mClient Load (0.0ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mAccount Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "accounts" WHERE "accounts"."account_number" = ? AND "accounts"."id" != ? LIMIT ?[0m  [["account_number", "d312e7f4-1620-4cab-a43d-5e006401c6d7"], ["id", 2], ["LIMIT", 1]]
+  [1m[36mAccount Update (0.0ms)[0m  [1m[33mUPDATE "accounts" SET "account_number" = ?, "balance" = ?, "updated_at" = ? WHERE "accounts"."id" = ?[0m  [["account_number", "d312e7f4-1620-4cab-a43d-5e006401c6d7"], ["balance", 50.0], ["updated_at", "2021-09-06 00:26:51.426809"], ["id", 2]]
+  [1m[36mClient Load (0.0ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mAccount Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "accounts" WHERE "accounts"."account_number" = ? AND "accounts"."id" != ? LIMIT ?[0m  [["account_number", "0acb9488-2eb2-40ca-a750-b62580c62bd3"], ["id", 1], ["LIMIT", 1]]
+  [1m[36mAccount Update (0.0ms)[0m  [1m[33mUPDATE "accounts" SET "account_number" = ?, "balance" = ?, "updated_at" = ? WHERE "accounts"."id" = ?[0m  [["account_number", "0acb9488-2eb2-40ca-a750-b62580c62bd3"], ["balance", 9950.0], ["updated_at", "2021-09-06 00:26:51.427501"], ["id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Completed 201 Created in 15ms (Views: 0.1ms | ActiveRecord: 1.9ms | Allocations: 14260)
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "account_transactions"[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+Started POST "/transfers" for 127.0.0.1 at 2021-09-06 02:26:51 +0200
+Processing by TransfersController#create as HTML
+Completed 404 Not Found in 0ms (ActiveRecord: 0.0ms | Allocations: 207)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "transfers"[0m
+Started POST "/transfers" for 127.0.0.1 at 2021-09-06 02:26:51 +0200
+Processing by TransfersController#create as JSON
+  Parameters: {"transfer"=>{"transferor_id"=>1, "transferee_id"=>2, "amount"=>1000000, "execution_date"=>"2021-09-01"}}
+Completed 404 Not Found in 0ms (ActiveRecord: 0.0ms | Allocations: 179)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+Started POST "/transfers" for 127.0.0.1 at 2021-09-06 02:26:51 +0200
+Processing by TransfersController#create as JSON
+  Parameters: {"transfer"=>{"transferor_id"=>1, "transferee_id"=>2, "amount"=>1000000, "execution_date"=>"2021-09-01"}}
+Completed 404 Not Found in 0ms (ActiveRecord: 0.0ms | Allocations: 171)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", "schema_sha1"]]
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mClient Create (0.3ms)[0m  [1m[32mINSERT INTO "clients" ("first_name", "last_name", "phone_number", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["first_name", "MENTOR"], ["last_name", "NILA"], ["phone_number", "38649841109"], ["created_at", "2021-09-06 00:33:53.781801"], ["updated_at", "2021-09-06 00:33:53.781801"]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mClient Create (0.1ms)[0m  [1m[32mINSERT INTO "clients" ("first_name", "last_name", "phone_number", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["first_name", "JON"], ["last_name", "NILA"], ["phone_number", "38649841110"], ["created_at", "2021-09-06 00:33:53.782974"], ["updated_at", "2021-09-06 00:33:53.782974"]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mClient Load (0.1ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mAccount Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "accounts" WHERE "accounts"."account_number" = ? LIMIT ?[0m  [["account_number", "9d222352-83be-4160-96c3-e3a2cb433ae0"], ["LIMIT", 1]]
+  [1m[36mAccount Create (0.1ms)[0m  [1m[32mINSERT INTO "accounts" ("client_id", "account_number", "balance", "currency", "status", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)[0m  [["client_id", 1], ["account_number", "9d222352-83be-4160-96c3-e3a2cb433ae0"], ["balance", 10000.0], ["currency", "USD"], ["status", "ACTIVE"], ["created_at", "2021-09-06 00:33:53.810559"], ["updated_at", "2021-09-06 00:33:53.810559"]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mClient Load (0.0ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mAccount Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "accounts" WHERE "accounts"."account_number" = ? LIMIT ?[0m  [["account_number", "aaafd055-abf6-43df-8e64-ae4161e3270a"], ["LIMIT", 1]]
+  [1m[36mAccount Create (0.1ms)[0m  [1m[32mINSERT INTO "accounts" ("client_id", "account_number", "balance", "currency", "status", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)[0m  [["client_id", 2], ["account_number", "aaafd055-abf6-43df-8e64-ae4161e3270a"], ["balance", 0.0], ["currency", "USD"], ["status", "ACTIVE"], ["created_at", "2021-09-06 00:33:53.811756"], ["updated_at", "2021-09-06 00:33:53.811756"]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "account_transactions"[0m
+Started POST "/transfers" for 127.0.0.1 at 2021-09-06 02:33:53 +0200
+Processing by TransfersController#create as JSON
+  Parameters: {"transferor_id"=>1, "transferee_id"=>2, "amount"=>50, "execution_date"=>"2021-09-01", "transfer"=>{"transferor_id"=>1, "transferee_id"=>2, "execution_date"=>"2021-09-01"}}
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mTransfer Create (4.9ms)[0m  [1m[32mINSERT INTO "transfers" ("transferor_id", "transferee_id", "execution_date", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["transferor_id", 1], ["transferee_id", 2], ["execution_date", "2021-09-01"], ["created_at", "2021-09-06 00:33:53.834087"], ["updated_at", "2021-09-06 00:33:53.834087"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "account_transactions" WHERE "account_transactions"."transaction_number" = ? LIMIT ?[0m  [["transaction_number", "2912c1b5-97cc-44dc-9c8d-2d12ad26da72"], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Create (0.1ms)[0m  [1m[32mINSERT INTO "account_transactions" ("transaction_number", "account_id", "amount", "transaction_type", "transfer_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)[0m  [["transaction_number", "2912c1b5-97cc-44dc-9c8d-2d12ad26da72"], ["account_id", 2], ["amount", 50.0], ["transaction_type", "deposit"], ["transfer_id", 1], ["created_at", "2021-09-06 00:33:53.842771"], ["updated_at", "2021-09-06 00:33:53.842771"]]
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "account_transactions" WHERE "account_transactions"."transaction_number" = ? LIMIT ?[0m  [["transaction_number", "6204f07e-a2a3-4bfa-80b2-c7239f143247"], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Create (0.0ms)[0m  [1m[32mINSERT INTO "account_transactions" ("transaction_number", "account_id", "amount", "transaction_type", "transfer_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)[0m  [["transaction_number", "6204f07e-a2a3-4bfa-80b2-c7239f143247"], ["account_id", 1], ["amount", 50.0], ["transaction_type", "withdraw"], ["transfer_id", 1], ["created_at", "2021-09-06 00:33:53.843440"], ["updated_at", "2021-09-06 00:33:53.843440"]]
+  [1m[36mClient Load (0.0ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mAccount Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "accounts" WHERE "accounts"."account_number" = ? AND "accounts"."id" != ? LIMIT ?[0m  [["account_number", "255462f1-738f-4b75-9586-551fd652339d"], ["id", 2], ["LIMIT", 1]]
+  [1m[36mAccount Update (0.0ms)[0m  [1m[33mUPDATE "accounts" SET "account_number" = ?, "balance" = ?, "updated_at" = ? WHERE "accounts"."id" = ?[0m  [["account_number", "255462f1-738f-4b75-9586-551fd652339d"], ["balance", 50.0], ["updated_at", "2021-09-06 00:33:53.844188"], ["id", 2]]
+  [1m[36mClient Load (0.0ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mAccount Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "accounts" WHERE "accounts"."account_number" = ? AND "accounts"."id" != ? LIMIT ?[0m  [["account_number", "1ee6746f-1cb9-4370-aadc-2c0badf8e6be"], ["id", 1], ["LIMIT", 1]]
+  [1m[36mAccount Update (0.0ms)[0m  [1m[33mUPDATE "accounts" SET "account_number" = ?, "balance" = ?, "updated_at" = ? WHERE "accounts"."id" = ?[0m  [["account_number", "1ee6746f-1cb9-4370-aadc-2c0badf8e6be"], ["balance", 9950.0], ["updated_at", "2021-09-06 00:33:53.844929"], ["id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Completed 201 Created in 18ms (Views: 0.1ms | ActiveRecord: 5.5ms | Allocations: 14398)
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "account_transactions"[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+Started POST "/transfers" for 127.0.0.1 at 2021-09-06 02:33:53 +0200
+Processing by TransfersController#create as HTML
+Completed 404 Not Found in 0ms (ActiveRecord: 0.0ms | Allocations: 207)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (5.2ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", "schema_sha1"]]
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mClient Create (0.2ms)[0m  [1m[32mINSERT INTO "clients" ("first_name", "last_name", "phone_number", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["first_name", "MENTOR"], ["last_name", "NILA"], ["phone_number", "38649841109"], ["created_at", "2021-09-06 00:34:09.531041"], ["updated_at", "2021-09-06 00:34:09.531041"]]
+  [1m[36mTRANSACTION (0.6ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mClient Create (0.1ms)[0m  [1m[32mINSERT INTO "clients" ("first_name", "last_name", "phone_number", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["first_name", "JON"], ["last_name", "NILA"], ["phone_number", "38649841110"], ["created_at", "2021-09-06 00:34:09.532364"], ["updated_at", "2021-09-06 00:34:09.532364"]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mClient Load (0.0ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mAccount Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "accounts" WHERE "accounts"."account_number" = ? LIMIT ?[0m  [["account_number", "78be139d-9fb6-4a76-8438-7b0405fa8df5"], ["LIMIT", 1]]
+  [1m[36mAccount Create (0.1ms)[0m  [1m[32mINSERT INTO "accounts" ("client_id", "account_number", "balance", "currency", "status", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)[0m  [["client_id", 1], ["account_number", "78be139d-9fb6-4a76-8438-7b0405fa8df5"], ["balance", 10000.0], ["currency", "USD"], ["status", "ACTIVE"], ["created_at", "2021-09-06 00:34:09.538090"], ["updated_at", "2021-09-06 00:34:09.538090"]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mClient Load (0.0ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mAccount Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "accounts" WHERE "accounts"."account_number" = ? LIMIT ?[0m  [["account_number", "2b4091bd-493e-44eb-a889-9d6f39b1c229"], ["LIMIT", 1]]
+  [1m[36mAccount Create (0.1ms)[0m  [1m[32mINSERT INTO "accounts" ("client_id", "account_number", "balance", "currency", "status", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)[0m  [["client_id", 2], ["account_number", "2b4091bd-493e-44eb-a889-9d6f39b1c229"], ["balance", 0.0], ["currency", "USD"], ["status", "ACTIVE"], ["created_at", "2021-09-06 00:34:09.539110"], ["updated_at", "2021-09-06 00:34:09.539110"]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "account_transactions"[0m
+Started POST "/transfers" for 127.0.0.1 at 2021-09-06 02:34:09 +0200
+Processing by TransfersController#create as JSON
+  Parameters: {"transferor_id"=>1, "transferee_id"=>2, "amount"=>50, "execution_date"=>"2021-09-01", "transfer"=>{"transferor_id"=>1, "transferee_id"=>2, "execution_date"=>"2021-09-01"}}
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mTransfer Create (0.1ms)[0m  [1m[32mINSERT INTO "transfers" ("transferor_id", "transferee_id", "execution_date", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["transferor_id", 1], ["transferee_id", 2], ["execution_date", "2021-09-01"], ["created_at", "2021-09-06 00:34:09.554359"], ["updated_at", "2021-09-06 00:34:09.554359"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "account_transactions" WHERE "account_transactions"."transaction_number" = ? LIMIT ?[0m  [["transaction_number", "32af8528-a78a-45f7-a5c6-8003dcfd4194"], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Create (0.1ms)[0m  [1m[32mINSERT INTO "account_transactions" ("transaction_number", "account_id", "amount", "transaction_type", "transfer_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)[0m  [["transaction_number", "32af8528-a78a-45f7-a5c6-8003dcfd4194"], ["account_id", 2], ["amount", 50.0], ["transaction_type", "deposit"], ["transfer_id", 1], ["created_at", "2021-09-06 00:34:09.557657"], ["updated_at", "2021-09-06 00:34:09.557657"]]
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "account_transactions" WHERE "account_transactions"."transaction_number" = ? LIMIT ?[0m  [["transaction_number", "ffdb25a5-baef-427b-8eeb-8389adae26ca"], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Create (0.0ms)[0m  [1m[32mINSERT INTO "account_transactions" ("transaction_number", "account_id", "amount", "transaction_type", "transfer_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)[0m  [["transaction_number", "ffdb25a5-baef-427b-8eeb-8389adae26ca"], ["account_id", 1], ["amount", 50.0], ["transaction_type", "withdraw"], ["transfer_id", 1], ["created_at", "2021-09-06 00:34:09.558251"], ["updated_at", "2021-09-06 00:34:09.558251"]]
+  [1m[36mClient Load (0.0ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mAccount Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "accounts" WHERE "accounts"."account_number" = ? AND "accounts"."id" != ? LIMIT ?[0m  [["account_number", "42b80a15-bcf4-4247-b1eb-808d463e9379"], ["id", 2], ["LIMIT", 1]]
+  [1m[36mAccount Update (0.0ms)[0m  [1m[33mUPDATE "accounts" SET "account_number" = ?, "balance" = ?, "updated_at" = ? WHERE "accounts"."id" = ?[0m  [["account_number", "42b80a15-bcf4-4247-b1eb-808d463e9379"], ["balance", 50.0], ["updated_at", "2021-09-06 00:34:09.558892"], ["id", 2]]
+  [1m[36mClient Load (0.0ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mAccount Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "accounts" WHERE "accounts"."account_number" = ? AND "accounts"."id" != ? LIMIT ?[0m  [["account_number", "d6865426-5eb1-4d4f-89e6-72a3ee03c2eb"], ["id", 1], ["LIMIT", 1]]
+  [1m[36mAccount Update (0.0ms)[0m  [1m[33mUPDATE "accounts" SET "account_number" = ?, "balance" = ?, "updated_at" = ? WHERE "accounts"."id" = ?[0m  [["account_number", "d6865426-5eb1-4d4f-89e6-72a3ee03c2eb"], ["balance", 9950.0], ["updated_at", "2021-09-06 00:34:09.559531"], ["id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Completed 201 Created in 9ms (Views: 0.1ms | ActiveRecord: 0.6ms | Allocations: 14260)
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "account_transactions"[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+Started POST "/transfers" for 127.0.0.1 at 2021-09-06 02:34:09 +0200
+Processing by TransfersController#create as HTML
+Completed 404 Not Found in 0ms (ActiveRecord: 0.0ms | Allocations: 207)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", "schema_sha1"]]
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mClient Create (0.5ms)[0m  [1m[32mINSERT INTO "clients" ("first_name", "last_name", "phone_number", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["first_name", "MENTOR"], ["last_name", "NILA"], ["phone_number", "38649841109"], ["created_at", "2021-09-06 00:37:12.850573"], ["updated_at", "2021-09-06 00:37:12.850573"]]
+  [1m[36mTRANSACTION (0.7ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mClient Create (0.1ms)[0m  [1m[32mINSERT INTO "clients" ("first_name", "last_name", "phone_number", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["first_name", "JON"], ["last_name", "NILA"], ["phone_number", "38649841110"], ["created_at", "2021-09-06 00:37:12.852266"], ["updated_at", "2021-09-06 00:37:12.852266"]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mClient Load (0.1ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mAccount Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "accounts" WHERE "accounts"."account_number" = ? LIMIT ?[0m  [["account_number", "8379769e-bffc-44bc-8bdd-cd4d757a2ce5"], ["LIMIT", 1]]
+  [1m[36mAccount Create (0.1ms)[0m  [1m[32mINSERT INTO "accounts" ("client_id", "account_number", "balance", "currency", "status", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)[0m  [["client_id", 1], ["account_number", "8379769e-bffc-44bc-8bdd-cd4d757a2ce5"], ["balance", 10000.0], ["currency", "USD"], ["status", "ACTIVE"], ["created_at", "2021-09-06 00:37:12.881036"], ["updated_at", "2021-09-06 00:37:12.881036"]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mClient Load (0.0ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mAccount Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "accounts" WHERE "accounts"."account_number" = ? LIMIT ?[0m  [["account_number", "1aa55dcd-688d-4828-af9f-a90e71d4d477"], ["LIMIT", 1]]
+  [1m[36mAccount Create (0.1ms)[0m  [1m[32mINSERT INTO "accounts" ("client_id", "account_number", "balance", "currency", "status", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)[0m  [["client_id", 2], ["account_number", "1aa55dcd-688d-4828-af9f-a90e71d4d477"], ["balance", 0.0], ["currency", "USD"], ["status", "ACTIVE"], ["created_at", "2021-09-06 00:37:12.882157"], ["updated_at", "2021-09-06 00:37:12.882157"]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "account_transactions"[0m
+Started POST "/transfers" for 127.0.0.1 at 2021-09-06 02:37:12 +0200
+Processing by TransfersController#create as JSON
+  Parameters: {"transferor_id"=>1, "transferee_id"=>2, "amount"=>50, "execution_date"=>"2021-09-01", "transfer"=>{"transferor_id"=>1, "transferee_id"=>2, "execution_date"=>"2021-09-01"}}
+Completed 500 Internal Server Error in 3ms (ActiveRecord: 0.1ms | Allocations: 3056)
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", "schema_sha1"]]
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mClient Create (0.2ms)[0m  [1m[32mINSERT INTO "clients" ("first_name", "last_name", "phone_number", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["first_name", "MENTOR"], ["last_name", "NILA"], ["phone_number", "38649841109"], ["created_at", "2021-09-06 00:37:26.570809"], ["updated_at", "2021-09-06 00:37:26.570809"]]
+  [1m[36mTRANSACTION (0.8ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mClient Create (0.1ms)[0m  [1m[32mINSERT INTO "clients" ("first_name", "last_name", "phone_number", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["first_name", "JON"], ["last_name", "NILA"], ["phone_number", "38649841110"], ["created_at", "2021-09-06 00:37:26.572344"], ["updated_at", "2021-09-06 00:37:26.572344"]]
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mClient Load (0.0ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mAccount Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "accounts" WHERE "accounts"."account_number" = ? LIMIT ?[0m  [["account_number", "97805689-d19e-4458-b620-21f6cf6baa4b"], ["LIMIT", 1]]
+  [1m[36mAccount Create (0.1ms)[0m  [1m[32mINSERT INTO "accounts" ("client_id", "account_number", "balance", "currency", "status", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)[0m  [["client_id", 1], ["account_number", "97805689-d19e-4458-b620-21f6cf6baa4b"], ["balance", 10000.0], ["currency", "USD"], ["status", "ACTIVE"], ["created_at", "2021-09-06 00:37:26.578165"], ["updated_at", "2021-09-06 00:37:26.578165"]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mClient Load (0.0ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mAccount Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "accounts" WHERE "accounts"."account_number" = ? LIMIT ?[0m  [["account_number", "5fe34882-ed1d-4a5b-af37-945c223ea142"], ["LIMIT", 1]]
+  [1m[36mAccount Create (0.1ms)[0m  [1m[32mINSERT INTO "accounts" ("client_id", "account_number", "balance", "currency", "status", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)[0m  [["client_id", 2], ["account_number", "5fe34882-ed1d-4a5b-af37-945c223ea142"], ["balance", 0.0], ["currency", "USD"], ["status", "ACTIVE"], ["created_at", "2021-09-06 00:37:26.579354"], ["updated_at", "2021-09-06 00:37:26.579354"]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "account_transactions"[0m
+Started POST "/transfers" for 127.0.0.1 at 2021-09-06 02:37:26 +0200
+Processing by TransfersController#create as JSON
+  Parameters: {"transferor_id"=>1, "transferee_id"=>2, "amount"=>50, "execution_date"=>"2021-09-01", "transfer"=>{"transferor_id"=>1, "transferee_id"=>2, "execution_date"=>"2021-09-01"}}
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+Completed 500 Internal Server Error in 3ms (ActiveRecord: 0.1ms | Allocations: 3425)
+  [1m[35m (3.3ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", "schema_sha1"]]
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mClient Create (0.2ms)[0m  [1m[32mINSERT INTO "clients" ("first_name", "last_name", "phone_number", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["first_name", "MENTOR"], ["last_name", "NILA"], ["phone_number", "38649841109"], ["created_at", "2021-09-06 00:37:41.667836"], ["updated_at", "2021-09-06 00:37:41.667836"]]
+  [1m[36mTRANSACTION (0.8ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mClient Create (0.1ms)[0m  [1m[32mINSERT INTO "clients" ("first_name", "last_name", "phone_number", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["first_name", "JON"], ["last_name", "NILA"], ["phone_number", "38649841110"], ["created_at", "2021-09-06 00:37:41.669385"], ["updated_at", "2021-09-06 00:37:41.669385"]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mClient Load (0.0ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mAccount Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "accounts" WHERE "accounts"."account_number" = ? LIMIT ?[0m  [["account_number", "5b486285-34a3-4572-ba6c-75a48f60fb53"], ["LIMIT", 1]]
+  [1m[36mAccount Create (0.1ms)[0m  [1m[32mINSERT INTO "accounts" ("client_id", "account_number", "balance", "currency", "status", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)[0m  [["client_id", 1], ["account_number", "5b486285-34a3-4572-ba6c-75a48f60fb53"], ["balance", 10000.0], ["currency", "USD"], ["status", "ACTIVE"], ["created_at", "2021-09-06 00:37:41.675021"], ["updated_at", "2021-09-06 00:37:41.675021"]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mClient Load (0.0ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mAccount Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "accounts" WHERE "accounts"."account_number" = ? LIMIT ?[0m  [["account_number", "d93a9a46-5cc5-446a-a8dd-17f62ad3e7b1"], ["LIMIT", 1]]
+  [1m[36mAccount Create (0.1ms)[0m  [1m[32mINSERT INTO "accounts" ("client_id", "account_number", "balance", "currency", "status", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)[0m  [["client_id", 2], ["account_number", "d93a9a46-5cc5-446a-a8dd-17f62ad3e7b1"], ["balance", 0.0], ["currency", "USD"], ["status", "ACTIVE"], ["created_at", "2021-09-06 00:37:41.676151"], ["updated_at", "2021-09-06 00:37:41.676151"]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "account_transactions"[0m
+Started POST "/transfers" for 127.0.0.1 at 2021-09-06 02:37:41 +0200
+Processing by TransfersController#create as JSON
+  Parameters: {"transferor_id"=>1, "transferee_id"=>2, "amount"=>50, "execution_date"=>"2021-09-01", "transfer"=>{"transferor_id"=>1, "transferee_id"=>2, "execution_date"=>"2021-09-01"}}
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mTransfer Create (0.1ms)[0m  [1m[32mINSERT INTO "transfers" ("transferor_id", "transferee_id", "execution_date", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["transferor_id", 1], ["transferee_id", 2], ["execution_date", "2021-09-01"], ["created_at", "2021-09-06 00:37:41.691810"], ["updated_at", "2021-09-06 00:37:41.691810"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "account_transactions" WHERE "account_transactions"."transaction_number" = ? LIMIT ?[0m  [["transaction_number", "090aa497-f9eb-40d0-9d04-29538b302ff3"], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Create (0.1ms)[0m  [1m[32mINSERT INTO "account_transactions" ("transaction_number", "account_id", "amount", "transaction_type", "transfer_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)[0m  [["transaction_number", "090aa497-f9eb-40d0-9d04-29538b302ff3"], ["account_id", 2], ["amount", 50.0], ["transaction_type", "deposit"], ["transfer_id", 1], ["created_at", "2021-09-06 00:37:41.695161"], ["updated_at", "2021-09-06 00:37:41.695161"]]
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "account_transactions" WHERE "account_transactions"."transaction_number" = ? LIMIT ?[0m  [["transaction_number", "410d4d41-db5c-4b6b-a88f-51e058a072cb"], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Create (0.0ms)[0m  [1m[32mINSERT INTO "account_transactions" ("transaction_number", "account_id", "amount", "transaction_type", "transfer_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)[0m  [["transaction_number", "410d4d41-db5c-4b6b-a88f-51e058a072cb"], ["account_id", 1], ["amount", 50.0], ["transaction_type", "withdraw"], ["transfer_id", 1], ["created_at", "2021-09-06 00:37:41.695753"], ["updated_at", "2021-09-06 00:37:41.695753"]]
+  [1m[36mClient Load (0.0ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mAccount Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "accounts" WHERE "accounts"."account_number" = ? AND "accounts"."id" != ? LIMIT ?[0m  [["account_number", "89f8bc68-1130-4a64-ae99-ab4db5a78a4f"], ["id", 2], ["LIMIT", 1]]
+  [1m[36mAccount Update (0.0ms)[0m  [1m[33mUPDATE "accounts" SET "account_number" = ?, "balance" = ?, "updated_at" = ? WHERE "accounts"."id" = ?[0m  [["account_number", "89f8bc68-1130-4a64-ae99-ab4db5a78a4f"], ["balance", 50.0], ["updated_at", "2021-09-06 00:37:41.696390"], ["id", 2]]
+  [1m[36mClient Load (0.0ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mAccount Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "accounts" WHERE "accounts"."account_number" = ? AND "accounts"."id" != ? LIMIT ?[0m  [["account_number", "5d8334bf-283b-4725-a608-38b2788fba48"], ["id", 1], ["LIMIT", 1]]
+  [1m[36mAccount Update (0.0ms)[0m  [1m[33mUPDATE "accounts" SET "account_number" = ?, "balance" = ?, "updated_at" = ? WHERE "accounts"."id" = ?[0m  [["account_number", "5d8334bf-283b-4725-a608-38b2788fba48"], ["balance", 9950.0], ["updated_at", "2021-09-06 00:37:41.697036"], ["id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Completed 201 Created in 10ms (Views: 0.1ms | ActiveRecord: 0.6ms | Allocations: 14347)
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "account_transactions"[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+Started POST "/transfers" for 127.0.0.1 at 2021-09-06 02:37:41 +0200
+Processing by TransfersController#create as HTML
+Completed 404 Not Found in 0ms (ActiveRecord: 0.0ms | Allocations: 207)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (5.1ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", "schema_sha1"]]
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mClient Create (0.2ms)[0m  [1m[32mINSERT INTO "clients" ("first_name", "last_name", "phone_number", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["first_name", "MENTOR"], ["last_name", "NILA"], ["phone_number", "38649841109"], ["created_at", "2021-09-06 00:38:05.200859"], ["updated_at", "2021-09-06 00:38:05.200859"]]
+  [1m[36mTRANSACTION (0.8ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mClient Create (0.1ms)[0m  [1m[32mINSERT INTO "clients" ("first_name", "last_name", "phone_number", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["first_name", "JON"], ["last_name", "NILA"], ["phone_number", "38649841110"], ["created_at", "2021-09-06 00:38:05.202394"], ["updated_at", "2021-09-06 00:38:05.202394"]]
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mClient Load (0.0ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mAccount Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "accounts" WHERE "accounts"."account_number" = ? LIMIT ?[0m  [["account_number", "c9e8e136-6dc9-4080-9d6c-88c4396a7639"], ["LIMIT", 1]]
+  [1m[36mAccount Create (0.1ms)[0m  [1m[32mINSERT INTO "accounts" ("client_id", "account_number", "balance", "currency", "status", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)[0m  [["client_id", 1], ["account_number", "c9e8e136-6dc9-4080-9d6c-88c4396a7639"], ["balance", 10000.0], ["currency", "USD"], ["status", "ACTIVE"], ["created_at", "2021-09-06 00:38:05.208496"], ["updated_at", "2021-09-06 00:38:05.208496"]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mClient Load (0.0ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mAccount Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "accounts" WHERE "accounts"."account_number" = ? LIMIT ?[0m  [["account_number", "f86ee7ea-0683-4765-a362-08f1c49d344d"], ["LIMIT", 1]]
+  [1m[36mAccount Create (0.1ms)[0m  [1m[32mINSERT INTO "accounts" ("client_id", "account_number", "balance", "currency", "status", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)[0m  [["client_id", 2], ["account_number", "f86ee7ea-0683-4765-a362-08f1c49d344d"], ["balance", 0.0], ["currency", "USD"], ["status", "ACTIVE"], ["created_at", "2021-09-06 00:38:05.209548"], ["updated_at", "2021-09-06 00:38:05.209548"]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "account_transactions"[0m
+Started POST "/transfers" for 127.0.0.1 at 2021-09-06 02:38:05 +0200
+Processing by TransfersController#create as JSON
+  Parameters: {"transferor_id"=>1, "transferee_id"=>2, "amount"=>50, "execution_date"=>"2021-09-01", "transfer"=>{"transferor_id"=>1, "transferee_id"=>2, "execution_date"=>"2021-09-01"}}
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mTransfer Create (0.1ms)[0m  [1m[32mINSERT INTO "transfers" ("transferor_id", "transferee_id", "execution_date", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["transferor_id", 1], ["transferee_id", 2], ["execution_date", "2021-09-01"], ["created_at", "2021-09-06 00:38:05.225189"], ["updated_at", "2021-09-06 00:38:05.225189"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "account_transactions" WHERE "account_transactions"."transaction_number" = ? LIMIT ?[0m  [["transaction_number", "283b1dec-5b10-4604-898c-8dbdc747cb01"], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Create (0.1ms)[0m  [1m[32mINSERT INTO "account_transactions" ("transaction_number", "account_id", "amount", "transaction_type", "transfer_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)[0m  [["transaction_number", "283b1dec-5b10-4604-898c-8dbdc747cb01"], ["account_id", 2], ["amount", 50.0], ["transaction_type", "deposit"], ["transfer_id", 1], ["created_at", "2021-09-06 00:38:05.228522"], ["updated_at", "2021-09-06 00:38:05.228522"]]
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "account_transactions" WHERE "account_transactions"."transaction_number" = ? LIMIT ?[0m  [["transaction_number", "d33696c4-44c6-4b3b-b870-ed4ac9517358"], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Create (0.0ms)[0m  [1m[32mINSERT INTO "account_transactions" ("transaction_number", "account_id", "amount", "transaction_type", "transfer_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)[0m  [["transaction_number", "d33696c4-44c6-4b3b-b870-ed4ac9517358"], ["account_id", 1], ["amount", 50.0], ["transaction_type", "withdraw"], ["transfer_id", 1], ["created_at", "2021-09-06 00:38:05.229131"], ["updated_at", "2021-09-06 00:38:05.229131"]]
+  [1m[36mClient Load (0.0ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mAccount Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "accounts" WHERE "accounts"."account_number" = ? AND "accounts"."id" != ? LIMIT ?[0m  [["account_number", "abd2040c-7e0e-45b6-87e4-418589d091ba"], ["id", 2], ["LIMIT", 1]]
+  [1m[36mAccount Update (0.0ms)[0m  [1m[33mUPDATE "accounts" SET "account_number" = ?, "balance" = ?, "updated_at" = ? WHERE "accounts"."id" = ?[0m  [["account_number", "abd2040c-7e0e-45b6-87e4-418589d091ba"], ["balance", 50.0], ["updated_at", "2021-09-06 00:38:05.229783"], ["id", 2]]
+  [1m[36mClient Load (0.0ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mAccount Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "accounts" WHERE "accounts"."account_number" = ? AND "accounts"."id" != ? LIMIT ?[0m  [["account_number", "315f9870-6914-4fb3-b34c-a13167484e21"], ["id", 1], ["LIMIT", 1]]
+  [1m[36mAccount Update (0.0ms)[0m  [1m[33mUPDATE "accounts" SET "account_number" = ?, "balance" = ?, "updated_at" = ? WHERE "accounts"."id" = ?[0m  [["account_number", "315f9870-6914-4fb3-b34c-a13167484e21"], ["balance", 9950.0], ["updated_at", "2021-09-06 00:38:05.230444"], ["id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Completed 201 Created in 10ms (Views: 0.1ms | ActiveRecord: 0.6ms | Allocations: 14344)
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "account_transactions"[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+Started POST "/transfers" for 127.0.0.1 at 2021-09-06 02:38:05 +0200
+Processing by TransfersController#create as HTML
+Completed 404 Not Found in 0ms (ActiveRecord: 0.0ms | Allocations: 207)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", "schema_sha1"]]
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "account_transactions"[0m
+Started POST "/transfers" for 127.0.0.1 at 2021-09-06 02:39:23 +0200
+Processing by TransfersController#create as JSON
+  Parameters: {"transferor_id"=>1, "transferee_id"=>2, "amount"=>50, "execution_date"=>"2021-09-01", "transfer"=>{"transferor_id"=>1, "transferee_id"=>2, "execution_date"=>"2021-09-01"}}
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mTransfer Create (0.3ms)[0m  [1m[32mINSERT INTO "transfers" ("transferor_id", "transferee_id", "execution_date", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["transferor_id", 1], ["transferee_id", 2], ["execution_date", "2021-09-01"], ["created_at", "2021-09-06 00:39:23.096628"], ["updated_at", "2021-09-06 00:39:23.096628"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "account_transactions" WHERE "account_transactions"."transaction_number" = ? LIMIT ?[0m  [["transaction_number", "e5ab10b7-c58f-4861-bb12-2c89ccdc2b52"], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Create (0.1ms)[0m  [1m[32mINSERT INTO "account_transactions" ("transaction_number", "account_id", "amount", "transaction_type", "transfer_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)[0m  [["transaction_number", "e5ab10b7-c58f-4861-bb12-2c89ccdc2b52"], ["account_id", 2], ["amount", 50.0], ["transaction_type", "deposit"], ["transfer_id", 1], ["created_at", "2021-09-06 00:39:23.102075"], ["updated_at", "2021-09-06 00:39:23.102075"]]
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "account_transactions" WHERE "account_transactions"."transaction_number" = ? LIMIT ?[0m  [["transaction_number", "6eb2a901-1e1b-4785-9eea-f8064cab44aa"], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Create (0.0ms)[0m  [1m[32mINSERT INTO "account_transactions" ("transaction_number", "account_id", "amount", "transaction_type", "transfer_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)[0m  [["transaction_number", "6eb2a901-1e1b-4785-9eea-f8064cab44aa"], ["account_id", 1], ["amount", 50.0], ["transaction_type", "withdraw"], ["transfer_id", 1], ["created_at", "2021-09-06 00:39:23.102714"], ["updated_at", "2021-09-06 00:39:23.102714"]]
+  [1m[36mClient Load (0.0ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mAccount Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "accounts" WHERE "accounts"."account_number" = ? AND "accounts"."id" != ? LIMIT ?[0m  [["account_number", "e4c82e59-f587-4f0d-8e7a-8b6a23e9f851"], ["id", 2], ["LIMIT", 1]]
+  [1m[36mAccount Update (0.0ms)[0m  [1m[33mUPDATE "accounts" SET "account_number" = ?, "balance" = ?, "updated_at" = ? WHERE "accounts"."id" = ?[0m  [["account_number", "e4c82e59-f587-4f0d-8e7a-8b6a23e9f851"], ["balance", 50.0], ["updated_at", "2021-09-06 00:39:23.106345"], ["id", 2]]
+  [1m[36mClient Load (0.0ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mAccount Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "accounts" WHERE "accounts"."account_number" = ? AND "accounts"."id" != ? LIMIT ?[0m  [["account_number", "04efe5f4-4a68-4465-9a7e-14a95649f00a"], ["id", 1], ["LIMIT", 1]]
+  [1m[36mAccount Update (0.0ms)[0m  [1m[33mUPDATE "accounts" SET "account_number" = ?, "balance" = ?, "updated_at" = ? WHERE "accounts"."id" = ?[0m  [["account_number", "04efe5f4-4a68-4465-9a7e-14a95649f00a"], ["balance", 9950.0], ["updated_at", "2021-09-06 00:39:23.107027"], ["id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Completed 201 Created in 19ms (Views: 0.1ms | ActiveRecord: 1.0ms | Allocations: 27264)
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "account_transactions"[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+Started POST "/transfers" for 127.0.0.1 at 2021-09-06 02:39:23 +0200
+Processing by TransfersController#create as HTML
+Completed 404 Not Found in 0ms (ActiveRecord: 0.0ms | Allocations: 207)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", "schema_sha1"]]
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "account_transactions"[0m
+Started POST "/transfers" for 127.0.0.1 at 2021-09-06 02:40:02 +0200
+Processing by TransfersController#create as JSON
+  Parameters: {"transferor_id"=>1, "transferee_id"=>2, "amount"=>50, "execution_date"=>"2021-09-01", "transfer"=>{"transferor_id"=>1, "transferee_id"=>2, "execution_date"=>"2021-09-01"}}
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mTransfer Create (0.3ms)[0m  [1m[32mINSERT INTO "transfers" ("transferor_id", "transferee_id", "execution_date", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["transferor_id", 1], ["transferee_id", 2], ["execution_date", "2021-09-01"], ["created_at", "2021-09-06 00:40:02.247562"], ["updated_at", "2021-09-06 00:40:02.247562"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "account_transactions" WHERE "account_transactions"."transaction_number" = ? LIMIT ?[0m  [["transaction_number", "1cde6169-7179-496e-a508-8870c3df2386"], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Create (0.1ms)[0m  [1m[32mINSERT INTO "account_transactions" ("transaction_number", "account_id", "amount", "transaction_type", "transfer_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)[0m  [["transaction_number", "1cde6169-7179-496e-a508-8870c3df2386"], ["account_id", 2], ["amount", 50.0], ["transaction_type", "deposit"], ["transfer_id", 1], ["created_at", "2021-09-06 00:40:02.253383"], ["updated_at", "2021-09-06 00:40:02.253383"]]
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "account_transactions" WHERE "account_transactions"."transaction_number" = ? LIMIT ?[0m  [["transaction_number", "ce4a7e82-4a29-4183-b905-1740ff18916f"], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Create (0.0ms)[0m  [1m[32mINSERT INTO "account_transactions" ("transaction_number", "account_id", "amount", "transaction_type", "transfer_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)[0m  [["transaction_number", "ce4a7e82-4a29-4183-b905-1740ff18916f"], ["account_id", 1], ["amount", 50.0], ["transaction_type", "withdraw"], ["transfer_id", 1], ["created_at", "2021-09-06 00:40:02.254031"], ["updated_at", "2021-09-06 00:40:02.254031"]]
+  [1m[36mClient Load (0.0ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mAccount Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "accounts" WHERE "accounts"."account_number" = ? AND "accounts"."id" != ? LIMIT ?[0m  [["account_number", "2538255b-2aea-47f1-a5f4-cbb5bffd37d9"], ["id", 2], ["LIMIT", 1]]
+  [1m[36mAccount Update (0.0ms)[0m  [1m[33mUPDATE "accounts" SET "account_number" = ?, "balance" = ?, "updated_at" = ? WHERE "accounts"."id" = ?[0m  [["account_number", "2538255b-2aea-47f1-a5f4-cbb5bffd37d9"], ["balance", 50.0], ["updated_at", "2021-09-06 00:40:02.258000"], ["id", 2]]
+  [1m[36mClient Load (0.0ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mAccount Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "accounts" WHERE "accounts"."account_number" = ? AND "accounts"."id" != ? LIMIT ?[0m  [["account_number", "362e006b-1e09-4e66-a813-326ac6ac8b8c"], ["id", 1], ["LIMIT", 1]]
+  [1m[36mAccount Update (0.0ms)[0m  [1m[33mUPDATE "accounts" SET "account_number" = ?, "balance" = ?, "updated_at" = ? WHERE "accounts"."id" = ?[0m  [["account_number", "362e006b-1e09-4e66-a813-326ac6ac8b8c"], ["balance", 9950.0], ["updated_at", "2021-09-06 00:40:02.258698"], ["id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Completed 201 Created in 20ms (Views: 0.1ms | ActiveRecord: 1.1ms | Allocations: 27270)
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "account_transactions"[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", "schema_sha1"]]
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "account_transactions"[0m
+Started POST "/transfers" for 127.0.0.1 at 2021-09-06 02:41:31 +0200
+Processing by TransfersController#create as JSON
+  Parameters: {"transferor_id"=>1, "transferee_id"=>2, "amount"=>50, "execution_date"=>"2021-09-01", "transfer"=>{"transferor_id"=>1, "transferee_id"=>2, "execution_date"=>"2021-09-01"}}
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mTransfer Create (0.3ms)[0m  [1m[32mINSERT INTO "transfers" ("transferor_id", "transferee_id", "execution_date", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["transferor_id", 1], ["transferee_id", 2], ["execution_date", "2021-09-01"], ["created_at", "2021-09-06 00:41:31.267791"], ["updated_at", "2021-09-06 00:41:31.267791"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "account_transactions" WHERE "account_transactions"."transaction_number" = ? LIMIT ?[0m  [["transaction_number", "e2cd6bdc-97e4-4618-8473-23dfdfc49040"], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Create (0.1ms)[0m  [1m[32mINSERT INTO "account_transactions" ("transaction_number", "account_id", "amount", "transaction_type", "transfer_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)[0m  [["transaction_number", "e2cd6bdc-97e4-4618-8473-23dfdfc49040"], ["account_id", 2], ["amount", 50.0], ["transaction_type", "deposit"], ["transfer_id", 1], ["created_at", "2021-09-06 00:41:31.273288"], ["updated_at", "2021-09-06 00:41:31.273288"]]
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "account_transactions" WHERE "account_transactions"."transaction_number" = ? LIMIT ?[0m  [["transaction_number", "47d28467-f120-4405-84c3-e4a72de41060"], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Create (0.0ms)[0m  [1m[32mINSERT INTO "account_transactions" ("transaction_number", "account_id", "amount", "transaction_type", "transfer_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)[0m  [["transaction_number", "47d28467-f120-4405-84c3-e4a72de41060"], ["account_id", 1], ["amount", 50.0], ["transaction_type", "withdraw"], ["transfer_id", 1], ["created_at", "2021-09-06 00:41:31.273935"], ["updated_at", "2021-09-06 00:41:31.273935"]]
+  [1m[36mClient Load (0.0ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mAccount Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "accounts" WHERE "accounts"."account_number" = ? AND "accounts"."id" != ? LIMIT ?[0m  [["account_number", "37f30d17-a6e9-46b3-986d-3d3311c9a682"], ["id", 2], ["LIMIT", 1]]
+  [1m[36mAccount Update (0.0ms)[0m  [1m[33mUPDATE "accounts" SET "account_number" = ?, "balance" = ?, "updated_at" = ? WHERE "accounts"."id" = ?[0m  [["account_number", "37f30d17-a6e9-46b3-986d-3d3311c9a682"], ["balance", 50.0], ["updated_at", "2021-09-06 00:41:31.277576"], ["id", 2]]
+  [1m[36mClient Load (0.0ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mAccount Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "accounts" WHERE "accounts"."account_number" = ? AND "accounts"."id" != ? LIMIT ?[0m  [["account_number", "182edb01-8b71-4156-98e8-d741ec0fe431"], ["id", 1], ["LIMIT", 1]]
+  [1m[36mAccount Update (0.0ms)[0m  [1m[33mUPDATE "accounts" SET "account_number" = ?, "balance" = ?, "updated_at" = ? WHERE "accounts"."id" = ?[0m  [["account_number", "182edb01-8b71-4156-98e8-d741ec0fe431"], ["balance", 9950.0], ["updated_at", "2021-09-06 00:41:31.278256"], ["id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Completed 201 Created in 19ms (Views: 0.1ms | ActiveRecord: 1.0ms | Allocations: 27264)
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "account_transactions"[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+Started POST "/transfers" for 127.0.0.1 at 2021-09-06 02:41:31 +0200
+Processing by TransfersController#create as HTML
+Completed 404 Not Found in 0ms (ActiveRecord: 0.0ms | Allocations: 207)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", "schema_sha1"]]
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "account_transactions"[0m
+Started POST "/transfers" for 127.0.0.1 at 2021-09-06 02:42:10 +0200
+Processing by TransfersController#create as JSON
+  Parameters: {"transferor_id"=>1, "transferee_id"=>2, "amount"=>50, "execution_date"=>"2021-09-01", "transfer"=>{"transferor_id"=>1, "transferee_id"=>2, "execution_date"=>"2021-09-01"}}
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mTransfer Create (0.3ms)[0m  [1m[32mINSERT INTO "transfers" ("transferor_id", "transferee_id", "execution_date", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["transferor_id", 1], ["transferee_id", 2], ["execution_date", "2021-09-01"], ["created_at", "2021-09-06 00:42:10.910277"], ["updated_at", "2021-09-06 00:42:10.910277"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "account_transactions" WHERE "account_transactions"."transaction_number" = ? LIMIT ?[0m  [["transaction_number", "0a43f386-855c-4ef6-a50c-eb30ea35466d"], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Create (0.1ms)[0m  [1m[32mINSERT INTO "account_transactions" ("transaction_number", "account_id", "amount", "transaction_type", "transfer_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)[0m  [["transaction_number", "0a43f386-855c-4ef6-a50c-eb30ea35466d"], ["account_id", 2], ["amount", 50.0], ["transaction_type", "deposit"], ["transfer_id", 1], ["created_at", "2021-09-06 00:42:10.915704"], ["updated_at", "2021-09-06 00:42:10.915704"]]
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "account_transactions" WHERE "account_transactions"."transaction_number" = ? LIMIT ?[0m  [["transaction_number", "dad2900e-3eb6-4528-8b97-0969496b07f3"], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Create (0.0ms)[0m  [1m[32mINSERT INTO "account_transactions" ("transaction_number", "account_id", "amount", "transaction_type", "transfer_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)[0m  [["transaction_number", "dad2900e-3eb6-4528-8b97-0969496b07f3"], ["account_id", 1], ["amount", 50.0], ["transaction_type", "withdraw"], ["transfer_id", 1], ["created_at", "2021-09-06 00:42:10.916373"], ["updated_at", "2021-09-06 00:42:10.916373"]]
+  [1m[36mClient Load (0.0ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mAccount Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "accounts" WHERE "accounts"."account_number" = ? AND "accounts"."id" != ? LIMIT ?[0m  [["account_number", "4632d040-8923-425b-bdd5-467ab49c031f"], ["id", 2], ["LIMIT", 1]]
+  [1m[36mAccount Update (0.0ms)[0m  [1m[33mUPDATE "accounts" SET "account_number" = ?, "balance" = ?, "updated_at" = ? WHERE "accounts"."id" = ?[0m  [["account_number", "4632d040-8923-425b-bdd5-467ab49c031f"], ["balance", 50.0], ["updated_at", "2021-09-06 00:42:10.920121"], ["id", 2]]
+  [1m[36mClient Load (0.0ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mAccount Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "accounts" WHERE "accounts"."account_number" = ? AND "accounts"."id" != ? LIMIT ?[0m  [["account_number", "054a04a7-4813-4e94-a88f-01e5b9ae46ed"], ["id", 1], ["LIMIT", 1]]
+  [1m[36mAccount Update (0.0ms)[0m  [1m[33mUPDATE "accounts" SET "account_number" = ?, "balance" = ?, "updated_at" = ? WHERE "accounts"."id" = ?[0m  [["account_number", "054a04a7-4813-4e94-a88f-01e5b9ae46ed"], ["balance", 9950.0], ["updated_at", "2021-09-06 00:42:10.920810"], ["id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Completed 201 Created in 19ms (Views: 0.1ms | ActiveRecord: 1.0ms | Allocations: 27264)
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "account_transactions"[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+Started POST "/transfers" for 127.0.0.1 at 2021-09-06 02:42:10 +0200
+Processing by TransfersController#create as JSON
+  Parameters: {"transferor_id"=>1, "transferee_id"=>2, "amount"=>50, "execution_date"=>"2021-09-01", "transfer"=>{"transferor_id"=>1, "transferee_id"=>2, "execution_date"=>"2021-09-01"}}
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mTransfer Create (0.2ms)[0m  [1m[32mINSERT INTO "transfers" ("transferor_id", "transferee_id", "execution_date", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["transferor_id", 1], ["transferee_id", 2], ["execution_date", "2021-09-01"], ["created_at", "2021-09-06 00:42:10.925257"], ["updated_at", "2021-09-06 00:42:10.925257"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "account_transactions" WHERE "account_transactions"."transaction_number" = ? LIMIT ?[0m  [["transaction_number", "d52b7a28-274c-471c-be14-c33cc9dccfb1"], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Create (0.1ms)[0m  [1m[32mINSERT INTO "account_transactions" ("transaction_number", "account_id", "amount", "transaction_type", "transfer_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)[0m  [["transaction_number", "d52b7a28-274c-471c-be14-c33cc9dccfb1"], ["account_id", 2], ["amount", 50.0], ["transaction_type", "deposit"], ["transfer_id", 1], ["created_at", "2021-09-06 00:42:10.926378"], ["updated_at", "2021-09-06 00:42:10.926378"]]
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "account_transactions" WHERE "account_transactions"."transaction_number" = ? LIMIT ?[0m  [["transaction_number", "3fe45532-b35a-4480-b896-4f75a8c70316"], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Create (0.0ms)[0m  [1m[32mINSERT INTO "account_transactions" ("transaction_number", "account_id", "amount", "transaction_type", "transfer_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)[0m  [["transaction_number", "3fe45532-b35a-4480-b896-4f75a8c70316"], ["account_id", 1], ["amount", 50.0], ["transaction_type", "withdraw"], ["transfer_id", 1], ["created_at", "2021-09-06 00:42:10.926978"], ["updated_at", "2021-09-06 00:42:10.926978"]]
+  [1m[36mClient Load (0.0ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mAccount Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "accounts" WHERE "accounts"."account_number" = ? AND "accounts"."id" != ? LIMIT ?[0m  [["account_number", "173ee280-41b0-413a-b4b7-1c6b136a7bd3"], ["id", 2], ["LIMIT", 1]]
+  [1m[36mAccount Update (0.0ms)[0m  [1m[33mUPDATE "accounts" SET "account_number" = ?, "balance" = ?, "updated_at" = ? WHERE "accounts"."id" = ?[0m  [["account_number", "173ee280-41b0-413a-b4b7-1c6b136a7bd3"], ["balance", 50.0], ["updated_at", "2021-09-06 00:42:10.927595"], ["id", 2]]
+  [1m[36mClient Load (0.0ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mAccount Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "accounts" WHERE "accounts"."account_number" = ? AND "accounts"."id" != ? LIMIT ?[0m  [["account_number", "ab9e4ee9-9a89-4f0c-803a-103e9f93cff0"], ["id", 1], ["LIMIT", 1]]
+  [1m[36mAccount Update (0.0ms)[0m  [1m[33mUPDATE "accounts" SET "account_number" = ?, "balance" = ?, "updated_at" = ? WHERE "accounts"."id" = ?[0m  [["account_number", "ab9e4ee9-9a89-4f0c-803a-103e9f93cff0"], ["balance", 9950.0], ["updated_at", "2021-09-06 00:42:10.928190"], ["id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Completed 201 Created in 4ms (Views: 0.0ms | ActiveRecord: 0.6ms | Allocations: 4122)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", "schema_sha1"]]
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "account_transactions"[0m
+Started POST "/transfers" for 127.0.0.1 at 2021-09-06 02:44:48 +0200
+Processing by TransfersController#create as JSON
+  Parameters: {"transferor_id"=>1, "transferee_id"=>2, "amount"=>50, "execution_date"=>"2021-09-01", "transfer"=>{"transferor_id"=>1, "transferee_id"=>2, "execution_date"=>"2021-09-01"}}
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mTransfer Create (0.3ms)[0m  [1m[32mINSERT INTO "transfers" ("transferor_id", "transferee_id", "execution_date", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["transferor_id", 1], ["transferee_id", 2], ["execution_date", "2021-09-01"], ["created_at", "2021-09-06 00:44:48.079718"], ["updated_at", "2021-09-06 00:44:48.079718"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "account_transactions" WHERE "account_transactions"."transaction_number" = ? LIMIT ?[0m  [["transaction_number", "3d8323d0-28fd-4bae-9c50-43ed943282c4"], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Create (0.1ms)[0m  [1m[32mINSERT INTO "account_transactions" ("transaction_number", "account_id", "amount", "transaction_type", "transfer_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)[0m  [["transaction_number", "3d8323d0-28fd-4bae-9c50-43ed943282c4"], ["account_id", 2], ["amount", 50.0], ["transaction_type", "deposit"], ["transfer_id", 1], ["created_at", "2021-09-06 00:44:48.085689"], ["updated_at", "2021-09-06 00:44:48.085689"]]
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "account_transactions" WHERE "account_transactions"."transaction_number" = ? LIMIT ?[0m  [["transaction_number", "d9107a5a-55b0-4981-ac45-1b88bce0a8d1"], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Create (0.0ms)[0m  [1m[32mINSERT INTO "account_transactions" ("transaction_number", "account_id", "amount", "transaction_type", "transfer_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)[0m  [["transaction_number", "d9107a5a-55b0-4981-ac45-1b88bce0a8d1"], ["account_id", 1], ["amount", 50.0], ["transaction_type", "withdraw"], ["transfer_id", 1], ["created_at", "2021-09-06 00:44:48.086443"], ["updated_at", "2021-09-06 00:44:48.086443"]]
+  [1m[36mClient Load (0.0ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mAccount Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "accounts" WHERE "accounts"."account_number" = ? AND "accounts"."id" != ? LIMIT ?[0m  [["account_number", "8447337c-2af3-4ef9-8def-010657d2f34a"], ["id", 2], ["LIMIT", 1]]
+  [1m[36mAccount Update (0.0ms)[0m  [1m[33mUPDATE "accounts" SET "account_number" = ?, "balance" = ?, "updated_at" = ? WHERE "accounts"."id" = ?[0m  [["account_number", "8447337c-2af3-4ef9-8def-010657d2f34a"], ["balance", 50.0], ["updated_at", "2021-09-06 00:44:48.090414"], ["id", 2]]
+  [1m[36mClient Load (0.0ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mAccount Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "accounts" WHERE "accounts"."account_number" = ? AND "accounts"."id" != ? LIMIT ?[0m  [["account_number", "ec9fab34-7808-4adf-962c-58f981a75828"], ["id", 1], ["LIMIT", 1]]
+  [1m[36mAccount Update (0.0ms)[0m  [1m[33mUPDATE "accounts" SET "account_number" = ?, "balance" = ?, "updated_at" = ? WHERE "accounts"."id" = ?[0m  [["account_number", "ec9fab34-7808-4adf-962c-58f981a75828"], ["balance", 9950.0], ["updated_at", "2021-09-06 00:44:48.091105"], ["id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Completed 201 Created in 20ms (Views: 0.1ms | ActiveRecord: 1.1ms | Allocations: 27272)
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "account_transactions"[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+Started POST "/transfers" for 127.0.0.1 at 2021-09-06 02:44:48 +0200
+Processing by TransfersController#create as JSON
+  Parameters: {"transfer"=>{"transferor_id"=>1, "transferee_id"=>2, "amount"=>50, "execution_date"=>"2021-09-01"}}
+Completed 404 Not Found in 0ms (ActiveRecord: 0.0ms | Allocations: 207)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "transfers"[0m
+Started POST "/transfers" for 127.0.0.1 at 2021-09-06 02:44:48 +0200
+Processing by TransfersController#create as JSON
+  Parameters: {"transferor_id"=>1, "transferee_id"=>2, "amount"=>1000000, "execution_date"=>"2021-09-01", "transfer"=>{"transferor_id"=>1, "transferee_id"=>2, "execution_date"=>"2021-09-01"}}
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+Completed 422 Unprocessable Entity in 0ms (Views: 0.0ms | ActiveRecord: 0.0ms | Allocations: 283)
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "transfers"[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+Started POST "/transfers" for 127.0.0.1 at 2021-09-06 02:44:48 +0200
+Processing by TransfersController#create as JSON
+  Parameters: {"transfer"=>{"transferor_id"=>1, "transferee_id"=>2, "amount"=>1000000, "execution_date"=>"2021-09-01"}}
+Completed 404 Not Found in 0ms (ActiveRecord: 0.0ms | Allocations: 171)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (5.1ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", "schema_sha1"]]
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "account_transactions"[0m
+Started POST "/transfers" for 127.0.0.1 at 2021-09-06 02:45:06 +0200
+Processing by TransfersController#create as JSON
+  Parameters: {"transferor_id"=>1, "transferee_id"=>2, "amount"=>50, "execution_date"=>"2021-09-01", "transfer"=>{"transferor_id"=>1, "transferee_id"=>2, "execution_date"=>"2021-09-01"}}
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mTransfer Create (0.2ms)[0m  [1m[32mINSERT INTO "transfers" ("transferor_id", "transferee_id", "execution_date", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["transferor_id", 1], ["transferee_id", 2], ["execution_date", "2021-09-01"], ["created_at", "2021-09-06 00:45:06.946366"], ["updated_at", "2021-09-06 00:45:06.946366"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "account_transactions" WHERE "account_transactions"."transaction_number" = ? LIMIT ?[0m  [["transaction_number", "6fa5405d-27e8-4447-9c10-25b4679131d8"], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Create (0.1ms)[0m  [1m[32mINSERT INTO "account_transactions" ("transaction_number", "account_id", "amount", "transaction_type", "transfer_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)[0m  [["transaction_number", "6fa5405d-27e8-4447-9c10-25b4679131d8"], ["account_id", 2], ["amount", 50.0], ["transaction_type", "deposit"], ["transfer_id", 1], ["created_at", "2021-09-06 00:45:06.950602"], ["updated_at", "2021-09-06 00:45:06.950602"]]
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "account_transactions" WHERE "account_transactions"."transaction_number" = ? LIMIT ?[0m  [["transaction_number", "99f4354d-5af0-4cc7-af79-1db5eb314d6d"], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Create (0.0ms)[0m  [1m[32mINSERT INTO "account_transactions" ("transaction_number", "account_id", "amount", "transaction_type", "transfer_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)[0m  [["transaction_number", "99f4354d-5af0-4cc7-af79-1db5eb314d6d"], ["account_id", 1], ["amount", 50.0], ["transaction_type", "withdraw"], ["transfer_id", 1], ["created_at", "2021-09-06 00:45:06.951237"], ["updated_at", "2021-09-06 00:45:06.951237"]]
+  [1m[36mClient Load (0.0ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mAccount Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "accounts" WHERE "accounts"."account_number" = ? AND "accounts"."id" != ? LIMIT ?[0m  [["account_number", "8e24a397-eaeb-417a-933e-41ac97e94a30"], ["id", 2], ["LIMIT", 1]]
+  [1m[36mAccount Update (0.0ms)[0m  [1m[33mUPDATE "accounts" SET "account_number" = ?, "balance" = ?, "updated_at" = ? WHERE "accounts"."id" = ?[0m  [["account_number", "8e24a397-eaeb-417a-933e-41ac97e94a30"], ["balance", 50.0], ["updated_at", "2021-09-06 00:45:06.954888"], ["id", 2]]
+  [1m[36mClient Load (0.0ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mAccount Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "accounts" WHERE "accounts"."account_number" = ? AND "accounts"."id" != ? LIMIT ?[0m  [["account_number", "637a2c45-52dd-4d31-b270-a636b1ab2427"], ["id", 1], ["LIMIT", 1]]
+  [1m[36mAccount Update (0.0ms)[0m  [1m[33mUPDATE "accounts" SET "account_number" = ?, "balance" = ?, "updated_at" = ? WHERE "accounts"."id" = ?[0m  [["account_number", "637a2c45-52dd-4d31-b270-a636b1ab2427"], ["balance", 9950.0], ["updated_at", "2021-09-06 00:45:06.955566"], ["id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Completed 201 Created in 16ms (Views: 0.1ms | ActiveRecord: 1.0ms | Allocations: 27263)
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "account_transactions"[0m
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+Started POST "/transfers" for 127.0.0.1 at 2021-09-06 02:45:06 +0200
+Processing by TransfersController#create as JSON
+  Parameters: {"transfer"=>{"transferor_id"=>1, "transferee_id"=>2, "amount"=>50, "execution_date"=>"2021-09-01"}}
+Completed 404 Not Found in 0ms (ActiveRecord: 0.0ms | Allocations: 207)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "transfers"[0m
+Started POST "/transfers" for 127.0.0.1 at 2021-09-06 02:45:06 +0200
+Processing by TransfersController#create as JSON
+  Parameters: {"transferor_id"=>1, "transferee_id"=>2, "amount"=>1000000, "execution_date"=>"2021-09-01", "transfer"=>{"transferor_id"=>1, "transferee_id"=>2, "execution_date"=>"2021-09-01"}}
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+Completed 422 Unprocessable Entity in 0ms (Views: 0.0ms | ActiveRecord: 0.0ms | Allocations: 283)
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "transfers"[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+Started POST "/transfers" for 127.0.0.1 at 2021-09-06 02:45:06 +0200
+Processing by TransfersController#create as JSON
+  Parameters: {"transfer"=>{"transferor_id"=>1, "transferee_id"=>2, "amount"=>1000000, "execution_date"=>"2021-09-01"}}
+Completed 404 Not Found in 0ms (ActiveRecord: 0.0ms | Allocations: 171)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (3.1ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", "schema_sha1"]]
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "account_transactions"[0m
+Started POST "/transfers" for 127.0.0.1 at 2021-09-06 02:46:18 +0200
+Processing by TransfersController#create as JSON
+  Parameters: {"transferor_id"=>1, "transferee_id"=>2, "amount"=>50, "execution_date"=>"2021-09-01", "transfer"=>{"transferor_id"=>1, "transferee_id"=>2, "execution_date"=>"2021-09-01"}}
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mTransfer Create (0.2ms)[0m  [1m[32mINSERT INTO "transfers" ("transferor_id", "transferee_id", "execution_date", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["transferor_id", 1], ["transferee_id", 2], ["execution_date", "2021-09-01"], ["created_at", "2021-09-06 00:46:18.304716"], ["updated_at", "2021-09-06 00:46:18.304716"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "account_transactions" WHERE "account_transactions"."transaction_number" = ? LIMIT ?[0m  [["transaction_number", "7c78022a-05e7-4fad-9bed-613b263d97a2"], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Create (0.1ms)[0m  [1m[32mINSERT INTO "account_transactions" ("transaction_number", "account_id", "amount", "transaction_type", "transfer_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)[0m  [["transaction_number", "7c78022a-05e7-4fad-9bed-613b263d97a2"], ["account_id", 2], ["amount", 50.0], ["transaction_type", "deposit"], ["transfer_id", 1], ["created_at", "2021-09-06 00:46:18.309011"], ["updated_at", "2021-09-06 00:46:18.309011"]]
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "account_transactions" WHERE "account_transactions"."transaction_number" = ? LIMIT ?[0m  [["transaction_number", "2ee7cd8d-1481-4bb1-9380-c83f6aeeba92"], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Create (0.0ms)[0m  [1m[32mINSERT INTO "account_transactions" ("transaction_number", "account_id", "amount", "transaction_type", "transfer_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)[0m  [["transaction_number", "2ee7cd8d-1481-4bb1-9380-c83f6aeeba92"], ["account_id", 1], ["amount", 50.0], ["transaction_type", "withdraw"], ["transfer_id", 1], ["created_at", "2021-09-06 00:46:18.309645"], ["updated_at", "2021-09-06 00:46:18.309645"]]
+  [1m[36mClient Load (0.0ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mAccount Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "accounts" WHERE "accounts"."account_number" = ? AND "accounts"."id" != ? LIMIT ?[0m  [["account_number", "a8a6ea32-dc43-4daa-9ed1-07b3d17ba3ba"], ["id", 2], ["LIMIT", 1]]
+  [1m[36mAccount Update (0.0ms)[0m  [1m[33mUPDATE "accounts" SET "account_number" = ?, "balance" = ?, "updated_at" = ? WHERE "accounts"."id" = ?[0m  [["account_number", "a8a6ea32-dc43-4daa-9ed1-07b3d17ba3ba"], ["balance", 50.0], ["updated_at", "2021-09-06 00:46:18.313223"], ["id", 2]]
+  [1m[36mClient Load (0.0ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mAccount Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "accounts" WHERE "accounts"."account_number" = ? AND "accounts"."id" != ? LIMIT ?[0m  [["account_number", "4e148353-578c-42dd-8889-abc6884e0cb4"], ["id", 1], ["LIMIT", 1]]
+  [1m[36mAccount Update (0.0ms)[0m  [1m[33mUPDATE "accounts" SET "account_number" = ?, "balance" = ?, "updated_at" = ? WHERE "accounts"."id" = ?[0m  [["account_number", "4e148353-578c-42dd-8889-abc6884e0cb4"], ["balance", 9950.0], ["updated_at", "2021-09-06 00:46:18.313903"], ["id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Completed 201 Created in 16ms (Views: 0.1ms | ActiveRecord: 0.9ms | Allocations: 27263)
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "account_transactions"[0m
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "account_transactions"[0m
+Started POST "/transfers" for 127.0.0.1 at 2021-09-06 02:46:18 +0200
+Processing by TransfersController#create as JSON
+  Parameters: {"transferor_id"=>1, "transferee_id"=>2, "amount"=>1000000, "execution_date"=>"2021-09-01", "transfer"=>{"transferor_id"=>1, "transferee_id"=>2, "execution_date"=>"2021-09-01"}}
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+Completed 422 Unprocessable Entity in 0ms (Views: 0.0ms | ActiveRecord: 0.0ms | Allocations: 284)
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "account_transactions"[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", "schema_sha1"]]
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT COUNT(*) FROM "account_transactions"[0m
+Started POST "/transfers" for 127.0.0.1 at 2021-09-06 02:48:03 +0200
+Processing by TransfersController#create as JSON
+  Parameters: {"transferor_id"=>1, "transferee_id"=>2, "amount"=>50, "execution_date"=>"2021-09-01", "transfer"=>{"transferor_id"=>1, "transferee_id"=>2, "execution_date"=>"2021-09-01"}}
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mTransfer Create (0.3ms)[0m  [1m[32mINSERT INTO "transfers" ("transferor_id", "transferee_id", "execution_date", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)[0m  [["transferor_id", 1], ["transferee_id", 2], ["execution_date", "2021-09-01"], ["created_at", "2021-09-06 00:48:03.458217"], ["updated_at", "2021-09-06 00:48:03.458217"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "account_transactions" WHERE "account_transactions"."transaction_number" = ? LIMIT ?[0m  [["transaction_number", "3665b113-6273-491d-81fc-2f64ec2a7dd3"], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Create (0.1ms)[0m  [1m[32mINSERT INTO "account_transactions" ("transaction_number", "account_id", "amount", "transaction_type", "transfer_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)[0m  [["transaction_number", "3665b113-6273-491d-81fc-2f64ec2a7dd3"], ["account_id", 2], ["amount", 50.0], ["transaction_type", "deposit"], ["transfer_id", 1], ["created_at", "2021-09-06 00:48:03.463926"], ["updated_at", "2021-09-06 00:48:03.463926"]]
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "account_transactions" WHERE "account_transactions"."transaction_number" = ? LIMIT ?[0m  [["transaction_number", "094a4cb6-e595-4a59-9981-4b258564206d"], ["LIMIT", 1]]
+  [1m[36mAccountTransaction Create (0.0ms)[0m  [1m[32mINSERT INTO "account_transactions" ("transaction_number", "account_id", "amount", "transaction_type", "transfer_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?)[0m  [["transaction_number", "094a4cb6-e595-4a59-9981-4b258564206d"], ["account_id", 1], ["amount", 50.0], ["transaction_type", "withdraw"], ["transfer_id", 1], ["created_at", "2021-09-06 00:48:03.464584"], ["updated_at", "2021-09-06 00:48:03.464584"]]
+  [1m[36mClient Load (0.0ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mAccount Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "accounts" WHERE "accounts"."account_number" = ? AND "accounts"."id" != ? LIMIT ?[0m  [["account_number", "16d22de3-92af-46b1-ae87-e0ff2cc6d52e"], ["id", 2], ["LIMIT", 1]]
+  [1m[36mAccount Update (0.0ms)[0m  [1m[33mUPDATE "accounts" SET "account_number" = ?, "balance" = ?, "updated_at" = ? WHERE "accounts"."id" = ?[0m  [["account_number", "16d22de3-92af-46b1-ae87-e0ff2cc6d52e"], ["balance", 50.0], ["updated_at", "2021-09-06 00:48:03.468321"], ["id", 2]]
+  [1m[36mClient Load (0.0ms)[0m  [1m[34mSELECT "clients".* FROM "clients" WHERE "clients"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mAccount Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "accounts" WHERE "accounts"."account_number" = ? AND "accounts"."id" != ? LIMIT ?[0m  [["account_number", "ec27e9a6-c470-4a11-9b10-2544ee7c8cef"], ["id", 1], ["LIMIT", 1]]
+  [1m[36mAccount Update (0.0ms)[0m  [1m[33mUPDATE "accounts" SET "account_number" = ?, "balance" = ?, "updated_at" = ? WHERE "accounts"."id" = ?[0m  [["account_number", "ec27e9a6-c470-4a11-9b10-2544ee7c8cef"], ["balance", 9950.0], ["updated_at", "2021-09-06 00:48:03.469018"], ["id", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+Completed 201 Created in 19ms (Views: 0.1ms | ActiveRecord: 1.0ms | Allocations: 27264)
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "account_transactions"[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mrollback transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "account_transactions"[0m
+Started POST "/transfers" for 127.0.0.1 at 2021-09-06 02:48:03 +0200
+Processing by TransfersController#create as JSON
+  Parameters: {"transferor_id"=>1, "transferee_id"=>2, "amount"=>1000000, "execution_date"=>"2021-09-01", "transfer"=>{"transferor_id"=>1, "transferee_id"=>2, "execution_date"=>"2021-09-01"}}
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mAccount Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+Completed 422 Unprocessable Entity in 0ms (Views: 0.0ms | ActiveRecord: 0.0ms | Allocations: 284)
+  [1m[35m (0.0ms)[0m  [1m[34mSELECT COUNT(*) FROM "account_transactions"[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
